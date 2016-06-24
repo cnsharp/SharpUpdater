@@ -62,6 +62,15 @@
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Pack|AnyCPU'">
+    <OutputPath>bin\Pack\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -150,7 +159,6 @@
     <EmbeddedResource Include="UpdateForm.zh-Hans.resx">
       <DependentUpon>UpdateForm.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="app.config" />
     <None Include="app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -163,7 +171,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Build Events.txt" />
     <Content Include="update.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -191,9 +198,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if $(ConfigurationName) NEQ Release GOTO END
+    <PostBuildEvent>if $(ConfigurationName) NEQ Pack GOTO END
 
-"%25ProgramFiles%25\Microsoft\ILMerge\ILMerge.exe" /t:winexe /out:%251UpdaterTemp.exe %251Updater.exe %251SharpUpdater.Util.dll %251ICSharpCode.SharpZipLib.dll %251CnSharp.ZipUtil.dll
+"%25ProgramFiles%25\Microsoft\ILMerge\ILMerge.exe" /t:winexe /out:%251UpdaterTemp.exe %251Updater.exe %251SharpUpdater.Core.dll
 IF %25ERRORLEVEL%25 NEQ 0 GOTO END
 
 
@@ -209,8 +216,8 @@ del UpdaterPro.pdb
 rename UpdaterPro.exe Updater.exe
 
 ::del %251zh-Hans\*.* /Q 
-copy "*.dll"  "..\..\..\..\..\build\"
-copy "$(TargetDir)*.exe"  "..\..\..\..\..\build\"
+::copy "*.dll"  "..\..\..\..\..\build\"
+::copy "$(TargetDir)*.exe"  "..\..\..\..\..\build\"
 
 :END
 

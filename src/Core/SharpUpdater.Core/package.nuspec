@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <!--*-->
+    <id>$id$</id>
+    <!--*-->
+    <version>4.0.0.0</version>
+    <title>
+    </title>
+    <!--*-->
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <!--
+    <licenseUrl></licenseUrl>
+  
+    <iconUrl></iconUrl>
+-->
+    <projectUrl>https://github.com/cnsharp/SharpUpdater</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <!--*-->
+    <description>$description$</description>
+    <!--*-->
+    <releaseNotes>Add several fields to manifest to match NuGet spec.</releaseNotes>
+    <copyright>$copyright$</copyright>
+    <tags>
+    </tags>
+    <dependencies>
+    </dependencies>
+  </metadata>
+</package>

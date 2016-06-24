@@ -43,6 +43,15 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>sn.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Pack|AnyCPU'">
+    <OutputPath>bin\Pack\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -68,6 +77,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="package.nuspec" />
     <None Include="sn.pfx" />
   </ItemGroup>
   <ItemGroup>

@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CnSharp")]
 [assembly: AssemblyProduct("SharpUpdater")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCopyright("Copyright © CnSharp 2012-2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

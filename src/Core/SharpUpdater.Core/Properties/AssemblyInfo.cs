@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("SharpUpdater.Util")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("SharpUpdater.Core")]
+[assembly: AssemblyDescription("Core Library of SharpUpdater which contains manifest class and several utilities.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CnSharp")]
-[assembly: AssemblyProduct("SharpUpdater.Util")]
+[assembly: AssemblyProduct("SharpUpdater.Core")]
 [assembly: AssemblyCopyright("Copyright © CnSharp 2012-2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -35,5 +35,5 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("3.0.2.2")]
-[assembly: AssemblyFileVersion("3.0.2.2")]
+[assembly: AssemblyVersion("4.0.0.0")]
+[assembly: AssemblyFileVersion("4.0.0.0")]
