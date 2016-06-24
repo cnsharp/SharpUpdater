@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<feed xml:base="http://localhost:40221/sp/" xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns="http://www.w3.org/2005/Atom">
+  <title type="text">FindPackagesById</title>
+  <id>http://localhost:40221/sp/FindPackagesById</id>
+  <updated>2016-06-21T06:54:11Z</updated>
+  <link rel="self" title="FindPackagesById" href="FindPackagesById" />
+  <entry>
+    <id>http://localhost:40221/sp/Packages(Id='Sample',Version='1.0.0.0')</id>
+    <title type="text">Sample</title>
+    <summary type="text"></summary>
+    <updated>2016-06-21T05:49:46Z</updated>
+    <author>
+      <name>cnsharp.com</name>
+    </author>
+    <link rel="edit-media" title="ODataPackage" href="Packages(Id='Sample',Version='1.0.0.0')/$value" />
+    <link rel="edit" title="ODataPackage" href="Packages(Id='Sample',Version='1.0.0.0')" />
+    <category term="SharpUpdater.Server.DataServices.ODataPackage" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme" />
+    <content type="application/zip" src="http://localhost:40221/api/v2/package/Sample/1.0.0.0" />
+    <m:properties xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices">
+      <d:Version>1.0.0.0</d:Version>
+      <d:NormalizedVersion>1.0.0</d:NormalizedVersion>
+      <d:IsPrerelease m:type="Edm.Boolean">false</d:IsPrerelease>
+      <d:Title>Sample</d:Title>
+      <d:Owners>Yintai.com</d:Owners>
+      <d:IconUrl m:null="true"></d:IconUrl>
+      <d:LicenseUrl m:null="true"></d:LicenseUrl>
+      <d:ProjectUrl m:null="true"></d:ProjectUrl>
+      <d:DownloadCount m:type="Edm.Int32">-1</d:DownloadCount>
+      <d:RequireLicenseAcceptance m:type="Edm.Boolean">false</d:RequireLicenseAcceptance>
+      <d:DevelopmentDependency m:type="Edm.Boolean">false</d:DevelopmentDependency>
+      <d:Description></d:Description>
+      <d:ReleaseNotes>twst</d:ReleaseNotes>
+      <d:Published m:type="Edm.DateTime">2016-06-21T06:54:11.0220469Z</d:Published>
+      <d:Dependencies></d:Dependencies>
+      <d:PackageHash>pqGCTh8n5vKrCaLGwMMyRedSS1wkt1/gXmj4DKeblq6wqStvsvOOtbsK6G3Bf6YihFqm6SNKBZE9rB6NjERoXA==</d:PackageHash>
+      <d:PackageHashAlgorithm>SHA512</d:PackageHashAlgorithm>
+      <d:PackageSize m:type="Edm.Int64">6588</d:PackageSize>
+      <d:Copyright m:null="true"></d:Copyright>
+      <d:Tags m:null="true"></d:Tags>
+      <d:IsAbsoluteLatestVersion m:type="Edm.Boolean">true</d:IsAbsoluteLatestVersion>
+      <d:IsLatestVersion m:type="Edm.Boolean">true</d:IsLatestVersion>
+      <d:Listed m:type="Edm.Boolean">true</d:Listed>
+      <d:VersionDownloadCount m:type="Edm.Int32">-1</d:VersionDownloadCount>
+      <d:MinClientVersion m:null="true"></d:MinClientVersion>
+      <d:Language m:null="true"></d:Language>
+      <d:Summary m:null="true"></d:Summary>
+    </m:properties>
+  </entry>
+</feed>

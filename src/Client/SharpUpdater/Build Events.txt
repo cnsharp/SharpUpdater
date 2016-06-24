@@ -1,0 +1,23 @@
+﻿if $(ConfigurationName) NEQ Release GOTO END
+
+"%ProgramFiles%\Microsoft\ILMerge\ILMerge.exe" /t:winexe /out:%1UpdaterTemp.exe %1Updater.exe %1SharpUpdater.Core.dll
+IF %ERRORLEVEL% NEQ 0 GOTO END
+
+
+"%ProgramFiles%\Microsoft\ILMerge\ILMerge.exe" /t:winexe /out:%1UpdaterPro.exe %1UpdaterTemp.exe %1zh-Hans\Updater.resources.dll 
+IF %ERRORLEVEL% NEQ 0 GOTO END
+
+
+del UpdaterTemp.exe 
+del UpdaterTemp.pdb 
+del Updater.exe 
+del Updater.pdb
+del UpdaterPro.pdb
+rename UpdaterPro.exe Updater.exe
+
+::del %1zh-Hans\*.* /Q 
+copy "*.dll"  "..\..\..\..\..\build\"
+copy "$(TargetDir)*.exe"  "..\..\..\..\..\build\"
+
+:END
+
