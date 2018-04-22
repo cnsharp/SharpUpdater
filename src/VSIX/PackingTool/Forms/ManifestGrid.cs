@@ -46,6 +46,13 @@ namespace CnSharp.VisualStudio.SharpDeploy.Forms
                     if (ext == ".exe" || ext == ".dll")
                     {
                         version = FileVersionInfo.GetVersionInfo(item.Dir).FileVersion;
+                        if (fi.Name == _manifest.EntryPoint)
+                        {
+                            if (_manifest.Version.EndsWith("*"))
+                                _manifest.Version = version;
+                            if(_manifest.MinVersion.EndsWith("*"))
+                                _manifest.MinVersion = version;
+                        }
                     }
                     gridFileList.Rows.Add(item.Selected,shortName, fi.Length, version);
               
@@ -73,21 +80,17 @@ namespace CnSharp.VisualStudio.SharpDeploy.Forms
                 var fileName = gr.Cells[ColFileName.Name].Value.ToString().ToLower();
                 if (fileName.EndsWith(".exe") || fileName.EndsWith(".dll") || fileName.StartsWith("["))
                     continue;
-                var got = false;
-              
+                var ver = "-";
                 foreach (var file in _manifest.Files)
                 {
                     if (string.Compare(file.FileName, fileName, true) == 0 && !string.IsNullOrEmpty(file.Version))
                     {
-                        gr.Cells[ColFileVersion.Name].Value = file.Version;
-                        got = true;
+                        ver = file.Version;
                         break;
                     }
                 }
-                if (!got)
-                {
-                    gr.Cells[ColFileVersion.Name].Value = _manifest.Version;
-                }
+                gr.Cells[ColFileVersion.Name].Value = ver;
+
             }
             _fileVersionGot = true;
         }

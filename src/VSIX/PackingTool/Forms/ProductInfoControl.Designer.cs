@@ -1,6 +1,6 @@
 ﻿namespace CnSharp.VisualStudio.SharpDeploy.Forms
 {
-    partial class ProductInfoForm
+    partial class ProductInfoControl
     {
         /// <summary> 
         /// Required designer variable.
@@ -251,7 +251,7 @@
             this.Controls.Add(this.label6);
             this.Controls.Add(this.txtAppName);
             this.Controls.Add(this.label7);
-            this.Name = "ProductInfoForm";
+            this.Name = "ProductInfoControl";
             this.Size = new System.Drawing.Size(666, 332);
             this.Load += new System.EventHandler(this.ProductInfoForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();

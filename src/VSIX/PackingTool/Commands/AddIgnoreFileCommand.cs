@@ -1,10 +1,4 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="AddIgnoreFileCommand.cs" company="Microsoft">
-//     Copyright (c) Microsoft.  All rights reserved.
-// </copyright>
-//------------------------------------------------------------------------------
-
-using System;
+﻿using System;
 using System.ComponentModel.Design;
 using System.IO;
 using System.Text;
@@ -51,7 +45,15 @@ namespace CnSharp.VisualStudio.SharpDeploy.Commands
             if (commandService != null)
             {
                 var menuCommandID = new CommandID(CommandSet, CommandId);
-                var menuItem = new MenuCommand(this.MenuItemCallback, menuCommandID);
+                var menuItem = new OleMenuCommand(this.MenuItemCallback, menuCommandID);
+                menuItem.BeforeQueryStatus += (sender, e) =>
+                {
+                    var dte = Host.Instance.Dte2;
+                    var project = dte.GetActiveProejct();
+                    var file = Path.Combine(project.GetDirectory(), Common.IgnoreFileName);
+                    var command = sender as OleMenuCommand;
+                    command.Visible = !File.Exists(file);
+                };
                 commandService.AddCommand(menuItem);
             }
         }
@@ -96,11 +98,11 @@ namespace CnSharp.VisualStudio.SharpDeploy.Commands
         {
             var dte = Host.Instance.Dte2;
             var project = dte.GetActiveProejct();
-            Common.CheckTfs(project);
             var file = Path.Combine(project.GetDirectory(), Common.IgnoreFileName);
             if (File.Exists(file))
                 return;
 
+            Common.CheckTfs(project);
             using (var sw = new StreamWriter(file, false, Encoding.UTF8))
             {
                 var temp = Resource.IgnoreFile;

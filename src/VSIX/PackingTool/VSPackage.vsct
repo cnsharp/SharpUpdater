@@ -59,7 +59,7 @@
         <Parent guid="guidVSPackageCmdSet" id="MyMenuGroup" />
         <!--<Icon guid="guidImages" id="bmpPic1" />-->
         <Strings>
-          <ButtonText>Deploy to SharpUpdater...</ButtonText>
+          <ButtonText>Deploy SharpUpdater Package...</ButtonText>
         </Strings>
       </Button>
       <Button guid="guidAddIgnoreFilePackageCmdSet" id="AddIgnoreFileCommandId" priority="0x0100" type="Button">

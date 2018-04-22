@@ -10,13 +10,22 @@ namespace CnSharp.VisualStudio.SharpDeploy.Util
     {
 
         private int _rootLength;
+        private readonly string _dir;
         private string _projectDir;
+        private readonly NuPackSettings _settings;
 
-        public List<FileListItem> GatherFiles(string dir, string projectDir,NuPackSettings settings)
+        public ManifestGatherer(string dir, string projectDir, NuPackSettings settings)
         {
             _rootLength = dir.Length;
+            _dir = dir;
             _projectDir = projectDir;
-            return GatherFilesInFolder(dir, true,settings.UnselectedFolders,settings.UnselectedFiles);
+            _settings = settings;
+        }
+
+        public List<FileListItem> GatherFiles()
+        {
+          
+            return GatherFilesInFolder(_dir, true,_settings.UnselectedFolders,_settings.UnselectedFiles);
         }
 
         private List<FileListItem> GatherFilesInFolder(string dir, bool isFirst,IList<string> unselectedFolders,IList<string> unselectedFiles )

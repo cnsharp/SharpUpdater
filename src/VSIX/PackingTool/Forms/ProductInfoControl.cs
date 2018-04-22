@@ -8,9 +8,9 @@ using CnSharp.VisualStudio.Extensions.Projects;
 
 namespace CnSharp.VisualStudio.SharpDeploy.Forms
 {
-    public partial class ProductInfoForm : UserControl
+    public partial class ProductInfoControl : UserControl
     {
-        public ProductInfoForm()
+        public ProductInfoControl()
         {
             InitializeComponent();
         }
@@ -23,7 +23,7 @@ namespace CnSharp.VisualStudio.SharpDeploy.Forms
             {
                 _manifest = value;
                 if(_manifest != null)
-                    BindReleaseInfo();
+                    BindManifest();
             }
             get
             {
@@ -69,7 +69,7 @@ namespace CnSharp.VisualStudio.SharpDeploy.Forms
         }
 
 
-        private void BindReleaseInfo()
+        private void BindManifest()
         {
             txtId.Text = _manifest.Id;
             txtAppName.Text = _manifest.AppName;

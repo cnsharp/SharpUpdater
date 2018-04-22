@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
-  <Metadata>
-    <Identity Id="SharpDeploy.CnSharp.77047188-d294-486f-ad94-7d0357d6700a" Version="1.0" Language="en-US" Publisher="CnSharp" />
-    <DisplayName>SharpDeploy</DisplayName>
-    <Description xml:space="preserve">Packaging and deploy tools for SharpUpdater which is a full featured application auto-update solution.</Description>
-    <MoreInfo>https://github.com/cnsharp/SharpUpdater</MoreInfo>
-    <ReleaseNotes>release_note.txt</ReleaseNotes>
-    <Icon>Resources\deploy.ico</Icon>
-    <Tags>AutoUpdate SharpUpdater Package Deploy</Tags>
-  </Metadata>
-  <Installation>
-    <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[14.0]" />
-    <InstallationTarget Version="[14.0,15.0)" Id="Microsoft.VisualStudio.Pro" />
-    <InstallationTarget Version="[14.0,15.0)" Id="Microsoft.VisualStudio.Enterprise" />
-    <InstallationTarget Version="[14.0,15.0)" Id="Microsoft.VisualStudio.VSWinDesktopExpress" />
-  </Installation>
-  <Dependencies>
-    <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
-    <Dependency Id="Microsoft.VisualStudio.MPF.14.0" DisplayName="Visual Studio MPF 14.0" d:Source="Installed" Version="[14.0]" />
-  </Dependencies>
-  <Assets>
-    <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
-  </Assets>
+    <Metadata>
+        <Identity Id="SharpDeploy.CnSharp.77047188-d294-486f-ad94-7d0357d6700a" Version="1.1" Language="en-US" Publisher="CnSharp Studio" />
+        <DisplayName>SharpDeploy</DisplayName>
+        <Description xml:space="preserve">Packaging and deploy tools for SharpUpdater which is a full featured application auto-update solution.</Description>
+        <MoreInfo>https://github.com/cnsharp/SharpUpdater</MoreInfo>
+        <ReleaseNotes>release_notes.txt</ReleaseNotes>
+        <Icon>Resources\deploy.ico</Icon>
+        <Tags>AutoUpdate SharpUpdater Package Deploy</Tags>
+    </Metadata>
+    <Installation>
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[14.0]" />
+        <InstallationTarget Version="[14.0,15.0)" Id="Microsoft.VisualStudio.Pro" />
+        <InstallationTarget Version="[14.0,15.0)" Id="Microsoft.VisualStudio.Enterprise" />
+        <InstallationTarget Version="[14.0,15.0)" Id="Microsoft.VisualStudio.VSWinDesktopExpress" />
+    </Installation>
+    <Dependencies>
+        <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
+        <Dependency Id="Microsoft.VisualStudio.MPF.14.0" DisplayName="Visual Studio MPF 14.0" d:Source="Installed" Version="[14.0]" />
+    </Dependencies>
+    <Assets>
+        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+    </Assets>
+    <Prerequisites>
+        <Prerequisite Id="Microsoft.VisualStudio.Component.ManagedDesktop.Prerequisites" Version="[15.0.27102.0,16.0)" DisplayName=".NET desktop development tools" />
+    </Prerequisites>
 </PackageManifest>

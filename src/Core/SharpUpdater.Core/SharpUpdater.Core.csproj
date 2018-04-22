@@ -41,7 +41,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>sn.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>key.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Pack|AnyCPU'">
     <OutputPath>bin\Pack\</OutputPath>
@@ -77,8 +77,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="key.pfx" />
     <None Include="package.nuspec" />
-    <None Include="sn.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Core\" />

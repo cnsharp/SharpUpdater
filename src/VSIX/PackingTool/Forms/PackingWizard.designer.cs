@@ -49,7 +49,7 @@
             this.gbFiles = new System.Windows.Forms.GroupBox();
             this.manifestGrid = new CnSharp.VisualStudio.SharpDeploy.Forms.ManifestGrid();
             this.wizardPagePackage = new AeroWizard.WizardPage();
-            this.productInfoForm = new CnSharp.VisualStudio.SharpDeploy.Forms.ProductInfoForm();
+            this._productInfoControl = new CnSharp.VisualStudio.SharpDeploy.Forms.ProductInfoControl();
             this.wizardPageDeploy = new AeroWizard.WizardPage();
             this.chkOpenDir = new System.Windows.Forms.CheckBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -74,24 +74,24 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(39, 199);
+            this.label1.Location = new System.Drawing.Point(39, 216);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(107, 17);
+            this.label1.Size = new System.Drawing.Size(95, 15);
             this.label1.TabIndex = 3;
             this.label1.Text = "Deploy Server (*)";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(39, 285);
+            this.label2.Location = new System.Drawing.Point(39, 309);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(52, 17);
+            this.label2.Size = new System.Drawing.Size(47, 15);
             this.label2.TabIndex = 6;
             this.label2.Text = "API Key";
             // 
             // txtKey
             // 
-            this.txtKey.Location = new System.Drawing.Point(42, 333);
+            this.txtKey.Location = new System.Drawing.Point(42, 361);
             this.txtKey.Name = "txtKey";
             this.txtKey.PasswordChar = '*';
             this.txtKey.Size = new System.Drawing.Size(429, 23);
@@ -100,9 +100,9 @@
             // sourceBox
             // 
             this.sourceBox.FormattingEnabled = true;
-            this.sourceBox.Location = new System.Drawing.Point(42, 229);
+            this.sourceBox.Location = new System.Drawing.Point(42, 248);
             this.sourceBox.Name = "sourceBox";
-            this.sourceBox.Size = new System.Drawing.Size(429, 25);
+            this.sourceBox.Size = new System.Drawing.Size(429, 23);
             this.sourceBox.TabIndex = 4;
             // 
             // stepWizardControl
@@ -116,7 +116,7 @@
             this.stepWizardControl.Pages.Add(this.wizardPageManifest);
             this.stepWizardControl.Pages.Add(this.wizardPagePackage);
             this.stepWizardControl.Pages.Add(this.wizardPageDeploy);
-            this.stepWizardControl.Size = new System.Drawing.Size(942, 640);
+            this.stepWizardControl.Size = new System.Drawing.Size(942, 693);
             this.stepWizardControl.StepListFont = new System.Drawing.Font("Microsoft YaHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World);
             this.stepWizardControl.TabIndex = 27;
             this.stepWizardControl.Text = "Pack / Deploy";
@@ -130,7 +130,7 @@
             this.wizardPageVersion.Controls.Add(this.chkSame);
             this.wizardPageVersion.Name = "wizardPageVersion";
             this.wizardPageVersion.NextPage = this.wizardPageManifest;
-            this.wizardPageVersion.Size = new System.Drawing.Size(744, 484);
+            this.wizardPageVersion.Size = new System.Drawing.Size(744, 539);
             this.stepWizardControl.SetStepText(this.wizardPageVersion, "Version Number");
             this.wizardPageVersion.TabIndex = 2;
             this.wizardPageVersion.Text = "Version Number";
@@ -141,7 +141,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(744, 424);
+            this.groupBox1.Size = new System.Drawing.Size(744, 459);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Assemblies";
@@ -159,7 +159,7 @@
             this.projectGrid.Location = new System.Drawing.Point(3, 19);
             this.projectGrid.Name = "projectGrid";
             this.projectGrid.RowTemplate.Height = 23;
-            this.projectGrid.Size = new System.Drawing.Size(738, 402);
+            this.projectGrid.Size = new System.Drawing.Size(738, 437);
             this.projectGrid.TabIndex = 0;
             // 
             // ColProductName
@@ -177,9 +177,9 @@
             // chkSame
             // 
             this.chkSame.AutoSize = true;
-            this.chkSame.Location = new System.Drawing.Point(0, 443);
+            this.chkSame.Location = new System.Drawing.Point(0, 480);
             this.chkSame.Name = "chkSame";
-            this.chkSame.Size = new System.Drawing.Size(218, 21);
+            this.chkSame.Size = new System.Drawing.Size(195, 19);
             this.chkSame.TabIndex = 9;
             this.chkSame.Text = "Same Version as the First Project";
             this.chkSame.UseVisualStyleBackColor = true;
@@ -194,7 +194,7 @@
             this.wizardPageManifest.Controls.Add(this.gbFiles);
             this.wizardPageManifest.Name = "wizardPageManifest";
             this.wizardPageManifest.NextPage = this.wizardPagePackage;
-            this.wizardPageManifest.Size = new System.Drawing.Size(744, 484);
+            this.wizardPageManifest.Size = new System.Drawing.Size(744, 534);
             this.stepWizardControl.SetStepText(this.wizardPageManifest, "Manifest");
             this.wizardPageManifest.TabIndex = 5;
             this.wizardPageManifest.Text = "Manifest";
@@ -203,17 +203,17 @@
             // 
             this.icoBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.icoBox.FormattingEnabled = true;
-            this.icoBox.Location = new System.Drawing.Point(505, 443);
+            this.icoBox.Location = new System.Drawing.Point(505, 480);
             this.icoBox.Name = "icoBox";
-            this.icoBox.Size = new System.Drawing.Size(184, 25);
+            this.icoBox.Size = new System.Drawing.Size(184, 23);
             this.icoBox.TabIndex = 5;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(368, 446);
+            this.label4.Location = new System.Drawing.Point(368, 483);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(102, 17);
+            this.label4.Size = new System.Drawing.Size(94, 15);
             this.label4.TabIndex = 4;
             this.label4.Text = "Application Icon";
             // 
@@ -221,9 +221,9 @@
             // 
             this.exeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.exeBox.FormattingEnabled = true;
-            this.exeBox.Location = new System.Drawing.Point(156, 443);
+            this.exeBox.Location = new System.Drawing.Point(156, 480);
             this.exeBox.Name = "exeBox";
-            this.exeBox.Size = new System.Drawing.Size(184, 25);
+            this.exeBox.Size = new System.Drawing.Size(184, 23);
             this.exeBox.TabIndex = 3;
             this.exeBox.Validating += new System.ComponentModel.CancelEventHandler(this.exeBox_Validating);
             this.exeBox.Validated += new System.EventHandler(this.exeBox_Validated);
@@ -231,9 +231,9 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(13, 446);
+            this.label3.Location = new System.Drawing.Point(13, 483);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(119, 17);
+            this.label3.Size = new System.Drawing.Size(111, 15);
             this.label3.TabIndex = 2;
             this.label3.Text = "Application Entry(*)";
             // 
@@ -243,7 +243,7 @@
             this.gbFiles.Dock = System.Windows.Forms.DockStyle.Top;
             this.gbFiles.Location = new System.Drawing.Point(0, 0);
             this.gbFiles.Name = "gbFiles";
-            this.gbFiles.Size = new System.Drawing.Size(744, 429);
+            this.gbFiles.Size = new System.Drawing.Size(744, 465);
             this.gbFiles.TabIndex = 1;
             this.gbFiles.TabStop = false;
             this.gbFiles.Text = "Files";
@@ -254,29 +254,29 @@
             this.manifestGrid.Location = new System.Drawing.Point(3, 19);
             this.manifestGrid.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.manifestGrid.Name = "manifestGrid";
-            this.manifestGrid.Size = new System.Drawing.Size(738, 407);
+            this.manifestGrid.Size = new System.Drawing.Size(738, 443);
             this.manifestGrid.TabIndex = 0;
             this.manifestGrid.OnSelectedRowsChanged += new System.EventHandler(this.manifestGrid_OnSelectedRowsChanged);
             // 
             // wizardPagePackage
             // 
-            this.wizardPagePackage.Controls.Add(this.productInfoForm);
+            this.wizardPagePackage.Controls.Add(this._productInfoControl);
             this.wizardPagePackage.Name = "wizardPagePackage";
             this.wizardPagePackage.NextPage = this.wizardPageDeploy;
-            this.wizardPagePackage.Size = new System.Drawing.Size(744, 484);
+            this.wizardPagePackage.Size = new System.Drawing.Size(744, 534);
             this.stepWizardControl.SetStepText(this.wizardPagePackage, "Product Info");
             this.wizardPagePackage.TabIndex = 3;
             this.wizardPagePackage.Text = "Product Info";
             // 
-            // productInfoForm
+            // _productInfoControl
             // 
-            this.productInfoForm.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.productInfoForm.Location = new System.Drawing.Point(0, 0);
-            this.productInfoForm.Manifest = null;
-            this.productInfoForm.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.productInfoForm.Name = "productInfoForm";
-            this.productInfoForm.Size = new System.Drawing.Size(744, 484);
-            this.productInfoForm.TabIndex = 0;
+            this._productInfoControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._productInfoControl.Location = new System.Drawing.Point(0, 0);
+            this._productInfoControl.Manifest = null;
+            this._productInfoControl.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this._productInfoControl.Name = "_productInfoControl";
+            this._productInfoControl.Size = new System.Drawing.Size(744, 534);
+            this._productInfoControl.TabIndex = 0;
             // 
             // wizardPageDeploy
             // 
@@ -290,7 +290,7 @@
             this.wizardPageDeploy.Controls.Add(this.txtKey);
             this.wizardPageDeploy.IsFinishPage = true;
             this.wizardPageDeploy.Name = "wizardPageDeploy";
-            this.wizardPageDeploy.Size = new System.Drawing.Size(744, 484);
+            this.wizardPageDeploy.Size = new System.Drawing.Size(744, 534);
             this.stepWizardControl.SetStepText(this.wizardPageDeploy, "Deploy");
             this.wizardPageDeploy.TabIndex = 4;
             this.wizardPageDeploy.Text = "Deploy";
@@ -300,9 +300,9 @@
             this.chkOpenDir.AutoSize = true;
             this.chkOpenDir.Checked = true;
             this.chkOpenDir.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkOpenDir.Location = new System.Drawing.Point(42, 134);
+            this.chkOpenDir.Location = new System.Drawing.Point(42, 145);
             this.chkOpenDir.Name = "chkOpenDir";
-            this.chkOpenDir.Size = new System.Drawing.Size(221, 21);
+            this.chkOpenDir.Size = new System.Drawing.Size(201, 19);
             this.chkOpenDir.TabIndex = 24;
             this.chkOpenDir.Text = "Open output directory after build";
             this.chkOpenDir.UseVisualStyleBackColor = true;
@@ -310,15 +310,15 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(39, 38);
+            this.label10.Location = new System.Drawing.Point(39, 41);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(158, 17);
+            this.label10.Size = new System.Drawing.Size(143, 15);
             this.label10.TabIndex = 22;
             this.label10.Text = "Package Output Directory";
             // 
             // txtOutputDir
             // 
-            this.txtOutputDir.Location = new System.Drawing.Point(42, 74);
+            this.txtOutputDir.Location = new System.Drawing.Point(42, 80);
             this.txtOutputDir.Name = "txtOutputDir";
             this.txtOutputDir.Size = new System.Drawing.Size(429, 23);
             this.txtOutputDir.TabIndex = 21;
@@ -328,9 +328,9 @@
             this.btnOpenOutputDir.FlatAppearance.BorderSize = 0;
             this.btnOpenOutputDir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOpenOutputDir.Image = global::CnSharp.VisualStudio.SharpDeploy.Resource.folder;
-            this.btnOpenOutputDir.Location = new System.Drawing.Point(493, 74);
+            this.btnOpenOutputDir.Location = new System.Drawing.Point(493, 80);
             this.btnOpenOutputDir.Name = "btnOpenOutputDir";
-            this.btnOpenOutputDir.Size = new System.Drawing.Size(23, 23);
+            this.btnOpenOutputDir.Size = new System.Drawing.Size(23, 25);
             this.btnOpenOutputDir.TabIndex = 23;
             this.btnOpenOutputDir.UseVisualStyleBackColor = true;
             this.btnOpenOutputDir.Click += new System.EventHandler(this.btnOpenOutputDir_Click);
@@ -346,15 +346,16 @@
             // 
             // PackingWizard
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this.ClientSize = new System.Drawing.Size(942, 640);
+            this.ClientSize = new System.Drawing.Size(942, 693);
             this.Controls.Add(this.stepWizardControl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "PackingWizard";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "PackingWizard";
             this.Load += new System.EventHandler(this.DeployWizard_Load);
             ((System.ComponentModel.ISupportInitialize)(this.stepWizardControl)).EndInit();
@@ -398,7 +399,7 @@
         private System.Windows.Forms.TextBox txtOutputDir;
         private System.Windows.Forms.Button btnOpenOutputDir;
         private System.Windows.Forms.BindingSource projectBindingSource;
-        private ProductInfoForm productInfoForm;
+        private ProductInfoControl _productInfoControl;
         private ManifestGrid manifestGrid;
         private System.Windows.Forms.ComboBox exeBox;
         private System.Windows.Forms.Label label3;

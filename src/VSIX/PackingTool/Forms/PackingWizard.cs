@@ -22,9 +22,6 @@ namespace CnSharp.VisualStudio.SharpDeploy.Forms
 {
     public partial class PackingWizard : Form
     {
-        private readonly Dictionary<Project, ProjectAssemblyInfo> _assemblyInfos =
-            new Dictionary<Project, ProjectAssemblyInfo>();
-
         private string _manifestFile;
         private NuPackSettings _settings;
         private Project _startProject;
@@ -47,10 +44,7 @@ namespace CnSharp.VisualStudio.SharpDeploy.Forms
             projectGrid.AutoGenerateColumns = false;
             
             BindProjects();
-
             BindSettings();
-
-        
 
             stepWizardControl.SelectedPageChanged += StepWizardControl_SelectedPageChanged;
             stepWizardControl.Finished += StepWizardControl_Finished;
@@ -80,14 +74,14 @@ namespace CnSharp.VisualStudio.SharpDeploy.Forms
             _startProject = dte2.GetActiveProejct();
             _projectDir = _startProject.GetDirectory();
 
-
             _manifestFile = $"{_projectDir}\\{Manifest.ManifestFileName}";
             _manifest = new Manifest();
+            _manifest.EntryPoint = _startProject.Properties.Item("OutputFileName").Value.ToString();
+            exeBox.Text = _manifest.EntryPoint;
             if (File.Exists(_manifestFile))
             {
                 _manifest = FileUtil.ReadManifest(_manifestFile);
             }
-
 
             var refProjects = dte2.GetSolutionProjects().ToList();
             refProjects.Remove(_startProject);
@@ -105,7 +99,6 @@ namespace CnSharp.VisualStudio.SharpDeploy.Forms
         private void BindProject(Project project)
         {
             var ass = project.GetProjectAssemblyInfo();
-            _assemblyInfos.Add(project, ass);
             projectGrid.Rows.Add(
                 project.Name,
                 ass != null ? ass.Version : string.Empty
@@ -120,8 +113,8 @@ namespace CnSharp.VisualStudio.SharpDeploy.Forms
                     );
                 if (ass != null)
                 {
-                    _manifest.Id = ass.ProductName;
-                    _manifest.AppName = ass.ProductName;
+                    _manifest.Id = ass.Title;
+                    _manifest.AppName = ass.Title;
                     _manifest.Owner = ass.Company;
                     _manifest.Description = ass.Description;
                     _manifest.Copyright = ass.Copyright;
@@ -148,8 +141,8 @@ namespace CnSharp.VisualStudio.SharpDeploy.Forms
                     return;
                 }
 
-                _manifestGatherer = new ManifestGatherer();
-                var items = _manifestGatherer.GatherFiles(_buildDir, _projectDir, _settings);
+                _manifestGatherer = new ManifestGatherer(_buildDir, _projectDir, _settings);
+                var items = _manifestGatherer.GatherFiles();
                 manifestGrid.Bind(_manifest, _buildDir, items);
                 BindBox();
             }
@@ -160,7 +153,7 @@ namespace CnSharp.VisualStudio.SharpDeploy.Forms
                     e.Cancel = true;
                     return;
                 }
-                productInfoForm.Manifest = _manifest;
+                _productInfoControl.Manifest = _manifest;
             }
         }
 
@@ -177,7 +170,7 @@ namespace CnSharp.VisualStudio.SharpDeploy.Forms
             }
             else if (stepWizardControl.SelectedPage == wizardPagePackage)
             {
-                productInfoForm.Focus();
+                _productInfoControl.Focus();
             }
             else if (stepWizardControl.SelectedPage == wizardPageDeploy)
             {
@@ -232,6 +225,16 @@ namespace CnSharp.VisualStudio.SharpDeploy.Forms
             {
                 errorProvider.SetError(box, "Directory not found.");
                 e.Cancel = true;
+                return;
+            }
+            var dir = box.Text.Replace("/", "\\");
+            if (!dir.EndsWith("\\"))
+                dir += "\\";
+            if (dir.StartsWith("bin\\release\\", StringComparison.InvariantCultureIgnoreCase) ||
+                dir.StartsWith(_buildDir, StringComparison.InvariantCultureIgnoreCase))
+            {
+                errorProvider.SetError(box,"Cannot be a sub directory under build directory.");
+                e.Cancel = true;
             }
         }
 
@@ -260,7 +263,7 @@ namespace CnSharp.VisualStudio.SharpDeploy.Forms
 
         private void SetControls()
         {
-            productInfoForm.ProjectAssemblyInfo = _assemblyInfo;
+            _productInfoControl.ProjectAssemblyInfo = _assemblyInfo;
         }
 
 
@@ -272,9 +275,8 @@ namespace CnSharp.VisualStudio.SharpDeploy.Forms
 
         public void Packing()
         {
+            _outputDir = EnsureOutputDir(_projectDir, txtOutputDir.Text);
             var manifestFile = SaveManifest();
-
-            _outputDir = FormatOutputDir(_buildDir, txtOutputDir.Text);
             CopyFiles();
             File.Copy(manifestFile, string.Concat(_versionFolder, "\\", Manifest.ManifestFileName));
 
@@ -323,7 +325,7 @@ namespace CnSharp.VisualStudio.SharpDeploy.Forms
 
         private string SaveManifest()
         {
-            _manifest = productInfoForm.Manifest;
+            _manifest = _productInfoControl.Manifest;
             _manifest.EntryPoint = exeBox.Text;
             _manifest.ShortcutIcon = icoBox.Text;
             _manifest.ReleaseDate = DateTime.Now.ToString();
@@ -353,7 +355,7 @@ namespace CnSharp.VisualStudio.SharpDeploy.Forms
             _settings.UnselectedFiles = manifestGrid.GetExcludedFiles().ToList();
             _settings.DeployServer = sourceBox.Text;
             _settings.DeployKey = txtKey.Text;
-            _settings.PackageOutputDirectory = _outputDir;
+            _settings.PackageOutputDirectory = txtOutputDir.Text.Contains(":") ? _outputDir : txtOutputDir.Text;
             _settings.OpenPackageOutputDirectoryAfterBuild = chkOpenDir.Checked;
 
             var cacheDir = Paths.GetNuPackSettingsLocation(_startProject);
@@ -380,7 +382,7 @@ namespace CnSharp.VisualStudio.SharpDeploy.Forms
             }
         }
 
-        protected string FormatOutputDir(string baseDir, string outputDir)
+        protected string EnsureOutputDir(string baseDir, string outputDir)
         {
             var dir = outputDir.Trim().Replace("/", "\\");
             if (!dir.Contains(":\\"))
@@ -411,13 +413,7 @@ namespace CnSharp.VisualStudio.SharpDeploy.Forms
                     {
                         assemblyInfo.Version = newVersion;
                         assemblyInfo.FileVersion = newVersion;
-
-                        var assemblyInfoFile = assemblyInfo.Project.GetAssemblyInfoFileName();
-                        var sc = Host.Instance.SourceControl;
-                        sc?.CheckOut(Path.GetDirectoryName(Host.Instance.DTE.Solution.FullName), assemblyInfoFile);
-                        assemblyInfo.Project.ModifyAssemblyInfo(assemblyInfo);
-
-                        //assemblyInfo.Project.Save();
+                        assemblyInfo.Save();
                     }
 
                     if (i == 0)
@@ -479,8 +475,8 @@ namespace CnSharp.VisualStudio.SharpDeploy.Forms
             box.Items.Clear();
             box.Items.AddRange(files.ToArray());
             if (!string.IsNullOrWhiteSpace(current) && files.Contains(current))
-                box.Text = current;
-            else if (files.Count > 0)
+                return;
+            if (files.Count > 0)
             {
                 box.Text = files[0];
             }

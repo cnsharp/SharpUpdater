@@ -1,10 +1,4 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="SharpPackCommand.cs" company="Microsoft">
-//     Copyright (c) Microsoft.  All rights reserved.
-// </copyright>
-//------------------------------------------------------------------------------
-
-using System;
+﻿using System;
 using System.ComponentModel.Design;
 using System.Windows.Forms;
 using CnSharp.VisualStudio.SharpDeploy.Forms;
