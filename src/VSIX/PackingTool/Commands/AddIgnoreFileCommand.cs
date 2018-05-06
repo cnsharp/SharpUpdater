@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Design;
 using System.IO;
+using System.Linq;
 using System.Text;
 using CnSharp.VisualStudio.Extensions;
 using Microsoft.VisualStudio.Shell;
@@ -49,10 +50,10 @@ namespace CnSharp.VisualStudio.SharpDeploy.Commands
                 menuItem.BeforeQueryStatus += (sender, e) =>
                 {
                     var dte = Host.Instance.Dte2;
-                    var project = dte.GetActiveProejct();
-                    var file = Path.Combine(project.GetDirectory(), Common.IgnoreFileName);
+                    var prj = dte.GetActiveProejct();
+                    var file = Path.Combine(prj.GetDirectory(), Common.IgnoreFileName);
                     var command = sender as OleMenuCommand;
-                    command.Visible = !File.Exists(file);
+                    command.Visible = !string.IsNullOrWhiteSpace(prj.FileName) && Common.SupportedProjectTypes.Any(t => prj.FileName.EndsWith(t)) && !File.Exists(file);
                 };
                 commandService.AddCommand(menuItem);
             }

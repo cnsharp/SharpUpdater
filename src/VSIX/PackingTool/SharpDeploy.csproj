@@ -110,6 +110,7 @@
     </Compile>
     <Compile Include="Util\CacheHelper.cs" />
     <Compile Include="Util\ManifestGatherer.cs" />
+    <Compile Include="Util\SolutionDataCache.cs" />
     <Compile Include="VSPackage.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.Design;
+using System.Linq;
 using System.Windows.Forms;
+using CnSharp.VisualStudio.Extensions;
 using CnSharp.VisualStudio.SharpDeploy.Forms;
 using Microsoft.VisualStudio.Shell;
 
@@ -44,9 +46,18 @@ namespace CnSharp.VisualStudio.SharpDeploy.Commands
             if (commandService != null)
             {
                 var menuCommandID = new CommandID(CommandSet, CommandId);
-                var menuItem = new MenuCommand(this.MenuItemCallback, menuCommandID);
+                var menuItem = new OleMenuCommand(this.MenuItemCallback, menuCommandID);
+                menuItem.BeforeQueryStatus += MenuItem_BeforeQueryStatus;
                 commandService.AddCommand(menuItem);
             }
+        }
+
+        private void MenuItem_BeforeQueryStatus(object sender, EventArgs e)
+        {
+            var prj = Host.Instance.DTE.GetActiveProejct();
+            if (prj == null) return;
+            var cmd = (OleMenuCommand)sender;
+            cmd.Visible = !string.IsNullOrWhiteSpace(prj.FileName) && Common.SupportedProjectTypes.Any(t => prj.FileName.EndsWith(t));
         }
 
         /// <summary>

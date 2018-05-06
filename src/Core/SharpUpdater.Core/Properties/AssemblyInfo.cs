@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CnSharp")]
 [assembly: AssemblyProduct("SharpUpdater.Core")]
-[assembly: AssemblyCopyright("Copyright © CnSharp 2012-2016")]
+[assembly: AssemblyCopyright("Copyright © CnSharp 2012-2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -24,16 +24,6 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("84fd9727-4467-4b0e-b663-6d38a206ac5e")]
 
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Build and Revision Numbers 
-// by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("4.0.0.0")]
-[assembly: AssemblyFileVersion("4.0.0.0")]
+[assembly: AssemblyVersion("4.1.0.0")]
+[assembly: AssemblyFileVersion("4.1.0.0")]

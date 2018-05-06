@@ -83,16 +83,17 @@ namespace CnSharp.VisualStudio.SharpDeploy.Forms
                 _manifest = FileUtil.ReadManifest(_manifestFile);
             }
 
-            var refProjects = dte2.GetSolutionProjects().ToList();
-            refProjects.Remove(_startProject);
+            var refProjects = SolutionDataCache.Instance.GetSolutionProperties(dte2.Solution.FileName).Projects;
+           
             projectGrid.Rows.Clear();
             BindProject(_startProject);
             foreach (var project in refProjects)
             {
+                if(project == _startProject) continue;
                 BindProject(project);
             }
 
-            chkSame.Visible = refProjects.Any();
+            chkSame.Visible = refProjects.Count > 1;
 
         }
 

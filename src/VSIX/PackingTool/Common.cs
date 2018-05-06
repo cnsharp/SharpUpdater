@@ -16,6 +16,7 @@ namespace CnSharp.VisualStudio.SharpDeploy
         public const string ProductName = "SharpDeploy";
         public static readonly string IgnoreFileName = $"{ProductName}.ignore";
         public const string ApiKeyHeader = "X-SHARPUPDATER-APIKEY";
+        public static readonly string[] SupportedProjectTypes = { ".csproj", ".vbproj", ".fsproj" };
 
         public static bool CheckTfs(Project project)
         {
