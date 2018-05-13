@@ -1,7 +1,4 @@
 using System;
-using System.ComponentModel;
-using System.IO;
-using System.Net;
 using System.Windows.Forms;
 using CnSharp.Updater;
 using CnSharp.Updater.Util;
@@ -14,15 +11,16 @@ namespace CnSharp.Windows.Updater
 
         private static readonly string FinishText = Common.GetLocalText("Completed");
         private static readonly string RetryText = Common.GetLocalText("Retry");
-        private readonly Manifest _localManifest;
+        private Manifest _localManifest;
         private readonly PackageFeedSummary _packageFeedSummary;
-   
- 
+
+
         private bool _downloaded;
         private string _totalSizeDesc;
-      
-    
+
+
         private Installer _installer;
+
         #endregion
 
         #region Constructors and Destructors
@@ -35,35 +33,28 @@ namespace CnSharp.Windows.Updater
 
             _localManifest = localManifest;
             _packageFeedSummary = packageFeedSummary;
-           
-            _installer = new Installer(packageFeedSummary.PackageUrl,Application.StartupPath,Common.IgnoreFiles,packageFeedSummary.Updated);
-            _installer.DownloadProgressChanged += (sender, e) =>
-            {
-                progressBar.Value = e.ProgressPercentage;
-            };
-            _installer.DownloadCompleted += (sender, args) =>
-            {
-                Finish();
-            };
+
+            _installer = new Installer(packageFeedSummary.PackageUrl, Application.StartupPath, Common.IgnoreFiles,
+                packageFeedSummary.Updated);
+            _installer.DownloadProgressChanged += (sender, e) => { progressBar.Value = e.ProgressPercentage; };
+            _installer.DownloadCompleted += (sender, args) => { Finish(); };
             _installer.UnzipCompleted += file =>
             {
                 var manifest = FileUtil.ReadManifest(file);
+                _localManifest = manifest;
                 CreateShortcut(manifest);
             };
         }
 
-       
 
         private void Finish()
         {
-         
             btnUpgrade.Enabled = true;
             btnUpgrade.Text = FinishText;
             _downloaded = true;
 
             Application.Exit();
             Common.Start(_localManifest);
-          
         }
 
         #endregion
@@ -81,15 +72,13 @@ namespace CnSharp.Windows.Updater
 
         private void DoUpgrade()
         {
-          
             _downloaded = false;
             progressBar.Value = 0;
-           _installer.Install();
+            _installer.Install();
         }
 
         private void FormUpdate_FormClosing(object sender, FormClosingEventArgs e)
         {
-            
         }
 
         private void FormUpdate_Load(object sender, EventArgs e)
@@ -106,9 +95,9 @@ namespace CnSharp.Windows.Updater
                 _localManifest.Version,
                 _packageFeedSummary.Version,
                 _packageFeedSummary.Updated);
-                
-                    boxDes.Text = _packageFeedSummary.ReleaseNotes;
-               
+
+            boxDes.Text = _packageFeedSummary.ReleaseNotes;
+
             progressBar.Maximum = 100;
             if (!btnUpgrade.Enabled)
             {

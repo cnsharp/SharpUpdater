@@ -16,6 +16,7 @@ using CnSharp.VisualStudio.Extensions.Projects;
 using CnSharp.VisualStudio.SharpDeploy.Util;
 using EnvDTE;
 using EnvDTE80;
+using Microsoft.VisualStudio.PlatformUI;
 using Process = System.Diagnostics.Process;
 
 namespace CnSharp.VisualStudio.SharpDeploy.Forms
@@ -146,6 +147,7 @@ namespace CnSharp.VisualStudio.SharpDeploy.Forms
                 var items = _manifestGatherer.GatherFiles();
                 manifestGrid.Bind(_manifest, _buildDir, items);
                 BindBox();
+                exeBox.Text = _startProject.Properties.Item("AssemblyName") + ".exe";
             }
             else if (e.Page == wizardPageManifest)
             {
@@ -312,12 +314,13 @@ namespace CnSharp.VisualStudio.SharpDeploy.Forms
                 {
                     wc.Headers.Add(Common.ApiKeyHeader, txtKey.Text);
                     wc.UploadFile(url, "PUT", _zipPath);
+                    Host.Instance.Dte2.OutputMessage(Common.ProductName, $"Upload package to {url} succeeded.");
                 }
                 catch(Exception ex)
                 {
                     var msg = $"Upload package to {url} failed.";
                     Common.ShowError(msg);
-                    msg += $"Exception:{ex.Message}";
+                    msg += $"Exception:{ex.Message}{Environment.NewLine}";
                     Host.Instance.Dte2.OutputMessage(Common.ProductName,msg);
                 }
             }

@@ -159,7 +159,9 @@
     <EmbeddedResource Include="UpdateForm.zh-Hans.resx">
       <DependentUpon>UpdateForm.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="app.manifest" />
+    <None Include="app.manifest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -171,6 +173,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="manifest.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="update.ico" />
   </ItemGroup>
   <ItemGroup>

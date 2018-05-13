@@ -37,7 +37,8 @@ namespace CnSharp.Windows.Updater
 
         private void DoWork(object sender, DoWorkEventArgs e)
         {
-            var feedUrl = $"{LocalManifest.ReleaseUrl}/sp/GetUpdates()?packageIds='{LocalManifest.Id}'&versions='{LocalManifest.Version}'&includePrerelease=false";
+            //var feedUrl = $"{LocalManifest.ReleaseUrl}/sp/GetUpdates()?packageIds='{LocalManifest.Id}'&versions='{LocalManifest.Version}'&includePrerelease=false";
+            var feedUrl = $"{LocalManifest.ReleaseUrl}sp/Search()?$filter=IsLatestVersion&searchTerm='{LocalManifest.Id}'&includePrerelease=false";
             var doc = new XmlDocument();
             doc.Load(feedUrl);
             var feedResolver = new PackageFeedResolver(doc);
