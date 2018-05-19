@@ -71,20 +71,6 @@ namespace CnSharp.VisualStudio.SharpDeploy {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .pdb
-        ///.log
-        ///*.vshost.
-        ///updater.exe
-        ///manifest.xml
-        ///releaselist.xml.
-        /// </summary>
-        internal static string IgnoreFile {
-            get {
-                return ResourceManager.GetString("IgnoreFile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon logo {

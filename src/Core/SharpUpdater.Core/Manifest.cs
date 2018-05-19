@@ -13,24 +13,24 @@ namespace CnSharp.Updater
     /// </summary>
     public class Manifest
     {
-        public const string ManifestFileName = "manifest.xml";
+        public const string ManifestFileName = "SharpUpdater.manifest";
         public const string ManifestExt = ".manifest";
         public const string PackageFileExt = ".sp";
 
         private List<ReleaseFile> _files;
      
         /// <summary>
-        /// entry point of app,old name 'ApplicationStart' (V3.0+)
+        /// entry point of app,old name 'ApplicationStart' (V3.x)
         /// </summary>
         public string EntryPoint { get; set; }
 
         /// <summary>
-        /// APP's name or title
+        /// APP name
         /// </summary>
         public string AppName { get; set; }
         public string Owner { get; set; }
         public string MinVersion { get; set; }
-        public string ReleaseDate { get; set; }
+        public DateTimeOffset ReleaseDate { get; set; }
         public string ReleaseUrl { get; set; }
         public string Version { get; set; }
         public string ShortcutIcon { get; set; }
@@ -63,57 +63,42 @@ namespace CnSharp.Updater
         public string Copyright { get; set; }
 
         /// <summary>
-        /// Updated date time string in package feed,like '2016-06-21T06:54:11Z'
+        /// Updated date time of package in UTC format,like '2018-05-17T14:48:56.4600377+00:00'
         /// </summary>
-        public string PackageUpdated { get; set; }
-
-        private string _releaseNotes;
+        public DateTimeOffset PackageUpdated { get; set; }
         /// <summary>
-        /// release note of app,old name 'UpdateDescription' (V3.0+)
+        /// release note of app,old name 'UpdateDescription' (V3.x)
         /// </summary>
         [XmlIgnore]
-        public string ReleaseNotes
-        {
-            get { return _releaseNotes; }
-            set { _releaseNotes = value; }
-        }
+        public string ReleaseNotes { get; set; }
 
         [XmlElement("ReleaseNotes")] 
         public XmlNode ReleaseNoteCData 
         {
             get
             {
-                return new XmlDocument().CreateCDataSection(_releaseNotes);
+                return new XmlDocument().CreateCDataSection(ReleaseNotes);
             }
-            set { _releaseNotes = value.Value; }
+            set { ReleaseNotes = value.Value; }
         }
 
-        private string _description;
         /// <summary>
         /// App Description (V4.0+)
         /// </summary>
         [XmlIgnore]
-        public string Description
-        {
-            get { return _description; }
-            set { _description = value; }
-        }
+        public string Description { get; set; }
 
         [XmlElement("Description")]
         public XmlNode DescriptionCData
         {
             get
             {
-                return new XmlDocument().CreateCDataSection(_description);
+                return new XmlDocument().CreateCDataSection(Description);
             }
-            set { _description = value.Value; }
+            set { Description = value.Value; }
         }
 
-        public List<ReleaseFile> Files
-        {
-            get { return _files ?? (_files = new List<ReleaseFile>()); }
-            set { _files = value; }
-        }
+        public List<ReleaseFile> Files { get; set; } = new List<ReleaseFile>();
 
         public int CompareTo(string version)
         {
@@ -128,9 +113,7 @@ namespace CnSharp.Updater
             int diff = CompareTo(otherList.Version);
             if (diff != 0)
                 return diff;
-            return (ReleaseDate == otherList.ReleaseDate)
-                       ? 0
-                       : (DateTime.Parse(ReleaseDate) > DateTime.Parse(otherList.ReleaseDate) ? 1 : -1);
+            return (ReleaseDate - otherList.ReleaseDate).Seconds;
         }
 
         public ReleaseFile[] GetDifferences(Manifest otherList, out long fileSize)

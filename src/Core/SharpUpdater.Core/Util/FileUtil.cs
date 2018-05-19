@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Xml;
@@ -16,6 +17,40 @@ namespace CnSharp.Updater.Util
 
         public static void Save(this Manifest manifest, string fileName)
         {
+            if (File.Exists(fileName))
+            {
+                var currentDoc = new XmlDocument();
+                currentDoc.Load(fileName);
+                var props = typeof(Manifest).GetProperties().ToList();
+                var root = currentDoc.ChildNodes[0];
+                var nodes = root.ChildNodes;
+                foreach (XmlNode node in nodes)
+                {
+                    var innerXml = node.InnerXml.Trim();
+                    if(innerXml.StartsWith("$") && innerXml.EndsWith("$")) continue;
+                    if(node.Name == "Files") continue;
+                    var prop = props.SingleOrDefault(p => p.Name.Equals(node.Name, StringComparison.OrdinalIgnoreCase));
+                    if (prop != null)
+                    {
+                        var val = prop.GetValue(manifest, null).ToString();
+                        node.InnerXml = node.Name == "ReleaseNotes" ? $"<![CDATA[{val}]]>" : val;
+                    }
+                }
+                var filesNodes = root.SelectSingleNode("Files");
+                if (filesNodes == null)
+                {
+                    var node = currentDoc.CreateElement("Files");
+                    root.AppendChild(node);
+                    filesNodes = node;
+                }
+
+                filesNodes.RemoveAll();
+                var tempNode = currentDoc.CreateElement("temp");
+                tempNode.InnerXml = XmlSerializerHelper.GetXmlStringFromObject(manifest.Files);
+                filesNodes.InnerXml = tempNode.ChildNodes[0].InnerXml;
+                currentDoc.Save(fileName);
+                return;
+            }
             string xml = XmlSerializerHelper.GetXmlStringFromObject(manifest);
             var doc = new XmlDocument();
             doc.LoadXml(xml);

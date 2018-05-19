@@ -3,6 +3,7 @@ using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Text;
+using CnSharp.Updater;
 using CnSharp.VisualStudio.Extensions;
 using Microsoft.VisualStudio.Shell;
 
@@ -106,7 +107,7 @@ namespace CnSharp.VisualStudio.SharpDeploy.Commands
             Common.CheckTfs(project);
             using (var sw = new StreamWriter(file, false, Encoding.UTF8))
             {
-                var temp = Resource.IgnoreFile;
+                var temp = Templates.IgnoreFiles;
                 sw.Write(temp);
                 sw.Flush();
                 sw.Close();

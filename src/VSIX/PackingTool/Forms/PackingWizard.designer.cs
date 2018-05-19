@@ -177,7 +177,7 @@
             // chkSame
             // 
             this.chkSame.AutoSize = true;
-            this.chkSame.Location = new System.Drawing.Point(0, 480);
+            this.chkSame.Location = new System.Drawing.Point(19, 478);
             this.chkSame.Name = "chkSame";
             this.chkSame.Size = new System.Drawing.Size(195, 19);
             this.chkSame.TabIndex = 9;

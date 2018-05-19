@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
@@ -7,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Xml;
 using AeroWizard;
 using CnSharp.Updater;
 using CnSharp.Updater.Packaging;
@@ -16,7 +16,6 @@ using CnSharp.VisualStudio.Extensions.Projects;
 using CnSharp.VisualStudio.SharpDeploy.Util;
 using EnvDTE;
 using EnvDTE80;
-using Microsoft.VisualStudio.PlatformUI;
 using Process = System.Diagnostics.Process;
 
 namespace CnSharp.VisualStudio.SharpDeploy.Forms
@@ -44,6 +43,7 @@ namespace CnSharp.VisualStudio.SharpDeploy.Forms
             BindTextBoxEvents();
             projectGrid.AutoGenerateColumns = false;
             
+            LoadManifest();
             BindProjects();
             BindSettings();
 
@@ -58,31 +58,57 @@ namespace CnSharp.VisualStudio.SharpDeploy.Forms
         {
             var cacheHelper = new CacheHelper<NuPackSettings>();
             var settingFile = Paths.GetNuPackSettingsLocation(_startProject);
-            if (File.Exists(settingFile))
-                _settings = cacheHelper.Get(settingFile);
-            else
-            {
-                _settings = new NuPackSettings();
-            }
+            _settings = File.Exists(settingFile) ? cacheHelper.Get(settingFile) : new NuPackSettings();
             txtOutputDir.Text = _settings.PackageOutputDirectory;
             chkOpenDir.Checked = _settings.OpenPackageOutputDirectoryAfterBuild;
-
         }
 
-        void BindProjects()
+        void LoadManifest()
         {
             var dte2 = Host.Instance.Dte2;
             _startProject = dte2.GetActiveProejct();
             _projectDir = _startProject.GetDirectory();
 
+            _assemblyInfo = _startProject.GetProjectAssemblyInfo();
+        
             _manifestFile = $"{_projectDir}\\{Manifest.ManifestFileName}";
-            _manifest = new Manifest();
-            _manifest.EntryPoint = _startProject.Properties.Item("OutputFileName").Value.ToString();
-            exeBox.Text = _manifest.EntryPoint;
+
             if (File.Exists(_manifestFile))
             {
-                _manifest = FileUtil.ReadManifest(_manifestFile);
+                var doc = new XmlDocument();
+                doc.Load(_manifestFile);
+                var xml = doc.InnerXml;
+                if (_assemblyInfo != null)
+                {
+                    xml = xml.Replace("$id$", _assemblyInfo.Title)
+                        .Replace("$owner$", _assemblyInfo.Company)
+                        .Replace("$description$", _assemblyInfo.Description)
+                        .Replace("$copyright$", _assemblyInfo.Copyright);
+                }
+
+                _manifest = XmlSerializerHelper.LoadObjectFromXmlString<Manifest>(xml);
             }
+            else
+            {
+                _manifest = new Manifest();
+                if (_assemblyInfo != null)
+                {
+                    _manifest.Id = _assemblyInfo.Title;
+                    _manifest.AppName = _assemblyInfo.Title;
+                    _manifest.Owner = _assemblyInfo.Company;
+                    _manifest.Description = _assemblyInfo.Description;
+                    _manifest.Copyright = _assemblyInfo.Copyright;
+                }
+            }
+
+            _manifest.EntryPoint = _startProject.Properties.Item("OutputFileName").Value.ToString();
+            exeBox.Text = _manifest.EntryPoint;
+        }
+
+        void BindProjects()
+        {
+            var dte2 = Host.Instance.Dte2;
+           
 
             var refProjects = SolutionDataCache.Instance.GetSolutionProperties(dte2.Solution.FileName).Projects;
            
@@ -100,12 +126,12 @@ namespace CnSharp.VisualStudio.SharpDeploy.Forms
 
         private void BindProject(Project project)
         {
-            var ass = project.GetProjectAssemblyInfo();
+            var asm = project.GetProjectAssemblyInfo();
             projectGrid.Rows.Add(
                 project.Name,
-                ass != null ? ass.Version : string.Empty
+                asm != null ? asm.Version : string.Empty
                 );
-            projectGrid.Rows[projectGrid.Rows.Count - 1].Tag = ass;
+            projectGrid.Rows[projectGrid.Rows.Count - 1].Tag = asm;
             if (project == _startProject)
             {
                 projectGrid.Rows[projectGrid.Rows.Count - 1].DefaultCellStyle.Font = new Font(
@@ -113,15 +139,7 @@ namespace CnSharp.VisualStudio.SharpDeploy.Forms
                     projectGrid.Font.Size,
                     FontStyle.Bold
                     );
-                if (ass != null)
-                {
-                    _manifest.Id = ass.Title;
-                    _manifest.AppName = ass.Title;
-                    _manifest.Owner = ass.Company;
-                    _manifest.Description = ass.Description;
-                    _manifest.Copyright = ass.Copyright;
-                }
-                _assemblyInfo = ass;
+               
             }
         }
 
@@ -332,7 +350,7 @@ namespace CnSharp.VisualStudio.SharpDeploy.Forms
             _manifest = _productInfoControl.Manifest;
             _manifest.EntryPoint = exeBox.Text;
             _manifest.ShortcutIcon = icoBox.Text;
-            _manifest.ReleaseDate = DateTime.Now.ToString();
+            _manifest.ReleaseDate = DateTime.UtcNow;
             _manifest.Files = manifestGrid.GetReleaseFiles().ToList();
 
             var file = string.Concat(_outputDir, "\\", Manifest.ManifestFileName);

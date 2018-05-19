@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Packaging\PackageBuilder.cs" />
+    <Compile Include="Templates.cs" />
     <Compile Include="Util\FileTypeRegister.cs" />
     <Compile Include="Util\FileUtil.cs" />
     <Compile Include="Util\Logger.cs" />
@@ -72,17 +73,10 @@
     <Compile Include="Util\XmlSerializerHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="manifest.xml">
-      <SubType>Designer</SubType>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="key.pfx" />
     <None Include="package.nuspec" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Core\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

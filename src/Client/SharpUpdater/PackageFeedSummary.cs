@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System;
+using System.Xml;
 using CnSharp.Updater;
 
 namespace CnSharp.Windows.Updater
@@ -7,7 +8,7 @@ namespace CnSharp.Windows.Updater
     {
         public string Id { get; set; }
         public string Version { get; set; }
-        public string Updated { get; set; }
+        public DateTimeOffset Updated { get; set; }
         public string ReleaseNotes { get; set; }
         public string PackageUrl { get; set; }
         public long PackageSize { get; set; }
@@ -15,7 +16,7 @@ namespace CnSharp.Windows.Updater
         public bool IsNew(Manifest manifest)
         {
             return
-                !(!string.IsNullOrEmpty(manifest.PackageUpdated) && manifest.PackageUpdated == Updated &&
+                !(manifest.PackageUpdated == Updated &&
                   manifest.Version == Version);
         }
     }
@@ -54,7 +55,7 @@ namespace CnSharp.Windows.Updater
             {
                 Id = root.SelectSingleNode("//ns:entry/ns:title",_namespaceManager).InnerText,
                 Version = root.SelectSingleNode("//ns:entry/m:properties/d:Version", _namespaceManager).InnerText,
-                Updated = root.SelectSingleNode("//ns:entry/ns:updated", _namespaceManager).InnerText,
+                Updated = DateTimeOffset.Parse(root.SelectSingleNode("//ns:entry/ns:updated", _namespaceManager).InnerText),
                 ReleaseNotes = root.SelectSingleNode("//ns:entry/m:properties/d:ReleaseNotes", _namespaceManager).InnerText,
                 PackageUrl = root.SelectSingleNode("//ns:entry/ns:content", _namespaceManager).Attributes["src"].Value,
                 PackageSize = long.Parse(root.SelectSingleNode("//ns:entry/m:properties/d:PackageSize", _namespaceManager).InnerText)

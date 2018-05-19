@@ -173,10 +173,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="manifest.xml">
+    <None Include="SharpUpdater.manifest">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </None>
     <Content Include="update.ico" />
   </ItemGroup>
   <ItemGroup>

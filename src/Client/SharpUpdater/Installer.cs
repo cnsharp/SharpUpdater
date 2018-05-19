@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.IO;
 using System.Net;
-using System.Threading;
 using CnSharp.Updater;
 using CnSharp.Updater.Util;
 
@@ -13,7 +12,7 @@ namespace CnSharp.Windows.Updater
         private readonly string _packagePath;
         private readonly string _appDir;
         private readonly string[] _ignoreFiles;
-        private readonly string _packageUpdatedDate;
+        private readonly DateTimeOffset? _packageUpdatedDate;
         private string _tempDir;
         private string _tempFile;
 
@@ -24,7 +23,7 @@ namespace CnSharp.Windows.Updater
 
         public event UnzippedEventHandler UnzipCompleted;
 
-        public Installer(string packagePath,string appDir, string[] ignoreFiles,string packageUpdatedDate = null)
+        public Installer(string packagePath,string appDir, string[] ignoreFiles,DateTimeOffset? packageUpdatedDate = null)
         {
             _packagePath = packagePath;
             _appDir = appDir;
@@ -55,11 +54,11 @@ namespace CnSharp.Windows.Updater
             }
             Unzip();
 
-            if (!string.IsNullOrEmpty(_packageUpdatedDate))
+            if (_packageUpdatedDate != null)
             {
                 var mf = Path.Combine(_appDir, Manifest.ManifestFileName);
                 var manifest = FileUtil.ReadManifest(mf);
-                manifest.PackageUpdated = _packageUpdatedDate;
+                manifest.PackageUpdated = _packageUpdatedDate.Value;
                 manifest.Save(mf);
             }
         }
