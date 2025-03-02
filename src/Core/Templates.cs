@@ -7,7 +7,7 @@
   <Id>$id$</Id>
   <AppName>$id$</AppName>
   <Owner>$owner$</Owner>
-  <Description>$description$</Description>
+  <Description><![CDATA[$description$]]></Description>
   <Copyright>$copyright$</Copyright>
   <MinVersion>$version$</MinVersion>
   <ReleaseUrl></ReleaseUrl>
@@ -19,11 +19,10 @@
   </Files>
 </Manifest>";
 
-        public const string IgnoreFiles = @".pdb
-.log
+        public const string IgnoreFiles = @".log
+.pdb
 *.vshost.
 updater.exe
-manifest.xml
-releaselist.xml";
+";
     }
 }

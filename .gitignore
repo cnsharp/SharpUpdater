@@ -243,3 +243,10 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+
+# keys
+*.snk
+
+# CnSharp Tools
+.nupack/
+.[Ss]harp[Uu]pdater/

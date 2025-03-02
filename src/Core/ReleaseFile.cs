@@ -4,8 +4,6 @@ namespace CnSharp.Updater
     {
         public string FileName { get; set; }
 
-        //public string ReleaseDate { get; set; }
-
         /// <summary>
         /// File size in Byte
         /// </summary>

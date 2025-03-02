@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>CnSharp.Updater</RootNamespace>
+    <AssemblyVersion>5.0.0.0</AssemblyVersion>
+    <FileVersion>5.0.0.0</FileVersion>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>sn.snk</AssemblyOriginatorKeyFile>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <IncludeSymbols>False</IncludeSymbols>
+    <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+    <Authors>CnSharp Studio</Authors>
+    <Copyright>Copyright © CnSharp Studio 2012-2025</Copyright>
+    <Description>Core library of SharpUpdater.</Description>
+    <PackageId>SharpUpdater.Core</PackageId>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/cnsharp/SharpUpdater</PackageProjectUrl>
+    <PackageReleaseNotes>Add settings</PackageReleaseNotes>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/cnsharp/SharpUpdater.git</RepositoryUrl>
+    <Version>5.0.1</Version>
+    <Company>CnSharp Studio</Company>
+    <PackageIcon>SharpUpdater-logo.png</PackageIcon>
+    <PackageTags>Winforms,WPF,Desktop,Updater,AutoUpdate</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="..\..\assets\SharpUpdater-logo.png" Link="SharpUpdater-logo.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.IO.Packaging" Version="9.0.2" />
+  </ItemGroup>
+</Project>
