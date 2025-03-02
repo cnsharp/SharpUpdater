@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>SharpUpdater.CLI</AssemblyName>
+    <RootNamespace>CnSharp.Updater.CLI</RootNamespace>
+    <ApplicationIcon>icon32x32.ico</ApplicationIcon>
+    <PackAsTool>True</PackAsTool>
+    <ToolCommandName>su</ToolCommandName>
+    <Version>1.0.0</Version>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <IncludeSymbols>False</IncludeSymbols>
+    <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+    <Authors>CnSharp Studio</Authors>
+    <Company>CnSharp Studio</Company>
+    <Copyright>Copyright © CnSharp Studio 2025</Copyright>
+    <Description>SharpUpdater CLI to build/deploy packages.</Description>
+    <PackageId>SharpUpdater.CLI</PackageId>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/cnsharp/SharpUpdater</PackageProjectUrl>
+    <PackageReleaseNotes>initial version</PackageReleaseNotes>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/cnsharp/SharpUpdater.git</RepositoryUrl>
+    <PackageIcon>SharpUpdater-logo.png</PackageIcon>
+    <PackageTags>Winforms,WPF,Desktop,Updater,AutoUpdate</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="..\..\assets\SharpUpdater-logo.png" Link="SharpUpdater-logo.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="icon32x32.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NuGet.Versioning" Version="6.13.2" />
+    <PackageReference Include="SharpUpdater.Core" Version="5.0.1" />
+    <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+</Project>
