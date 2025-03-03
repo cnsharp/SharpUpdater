@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!--This is the file that defines the IDs for all the commands exposed by VisualStudio. -->
+  <Extern href="stdidcmd.h"/>
+
+  <!--This header contains the command ids for the menus provided by the shell. -->
+  <Extern href="vsshlids.h"/>
+
+  <!--The Commands section is where commands, menus, and menu groups are defined.
+      This section uses a Guid to identify the package that provides the command defined inside it. -->
+  <Commands package="guidSharpUpdaterPackage">
+    <Groups>
+		<Group guid="guidProjectCmdSet" id="ProjectMenuGroup" priority="0x0600">
+			<Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_PROJNODE" />
+		</Group>
+		<Group guid="guidProjectAddCmdSet" id="ProjectAddMenuGroup" priority="0x0600">
+			<Parent guid="guidSHLMainMenu" id="IDM_VS_CSCD_PROJECT_ADD"/>
+		</Group>
+	</Groups>
+   
+
+    <!--Buttons section. -->
+    <!--This section defines the elements the user can interact with, like a menu command or a button
+        or combo box in a toolbar. -->
+    <Buttons>
+		<Button guid="guidProjectCmdSet" id="SharpPackCommandId" priority="0x0100" type="Button">
+			<Parent guid="guidProjectCmdSet" id="ProjectMenuGroup" />
+			<!--<CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>-->
+			<Icon guid="guidImages" id="icon1" />
+			<Strings>
+				<ButtonText>SharpUpdater Pack...</ButtonText>
+			</Strings>
+		</Button>
+		<Button guid="guidProjectAddCmdSet" id="AddIgnoreFileCommandId" priority="0x0100" type="Button">
+			<Parent guid="guidProjectAddCmdSet" id="ProjectAddMenuGroup" />
+			<!--<CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>-->
+      <Icon guid="guidImages" id="icon1" />
+			<Strings>
+				<ButtonText>SharpUpdater.ignore</ButtonText>
+			</Strings>
+		</Button>
+      <Button guid="guidProjectAddCmdSet" id="AddManifestFileCommandId" priority="0x0101" type="Button">
+        <Parent guid="guidProjectAddCmdSet" id="ProjectAddMenuGroup" />
+        <!--<CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>-->
+        <Icon guid="guidImages" id="icon1" />
+        <Strings>
+          <ButtonText>SharpUpdater.manifest</ButtonText>
+        </Strings>
+      </Button>
+	</Buttons>
+
+
+  <Bitmaps>
+      <Bitmap guid="guidImages" href="Resources\SharpUpdater-logo16x16.ico" usedList="1"/>
+    </Bitmaps>
+  </Commands>
+
+  <Symbols>
+    <!-- This is the package guid. -->
+    <GuidSymbol name="guidSharpUpdaterPackage" value="{85ecc0d6-9c3a-432f-ac95-7a9583195cf5}" />
+
+    <!-- This is the guid used to group the menu commands together -->
+
+	<GuidSymbol name="guidProjectCmdSet" value="{9065ee1d-60e4-44a1-9303-2679b24fa055}">
+		<IDSymbol name="ProjectMenuGroup" value="0x1020" />
+		<IDSymbol name="SharpPackCommandId" value="0x0100" />
+	</GuidSymbol>
+
+	<GuidSymbol name="guidProjectAddCmdSet" value="{307E403C-3431-45B9-86D6-3DFF0810D838}">
+		<IDSymbol name="ProjectAddMenuGroup" value="0x1020" />
+		<IDSymbol name="AddIgnoreFileCommandId" value="0x0100" />
+    <IDSymbol name="AddManifestFileCommandId" value="0x0101" />
+	</GuidSymbol>
+
+
+	  <GuidSymbol name="guidImages" value="{d524bb98-8a0c-4aa9-95ea-87ece9af81f8}" >
+      <IDSymbol name="icon1" value="1" />
+    </GuidSymbol>
+  </Symbols>
+</CommandTable>

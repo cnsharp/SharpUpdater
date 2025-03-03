@@ -1,2 +1,0 @@
-﻿V4.0 2016/6/24
-+ A bran-new version to make package similar to NuGet package
