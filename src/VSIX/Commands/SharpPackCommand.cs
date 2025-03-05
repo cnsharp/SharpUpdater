@@ -93,7 +93,7 @@ namespace CnSharp.VisualStudio.SharpUpdater.Commands
             var wizard = new PackingWizard();
             if (wizard.ShowDialog() == DialogResult.OK)
             {
-                Task.Run(() => wizard.Packing().ContinueWith(task =>
+                Task.Run(() => wizard.PackingAsync().ContinueWith(task =>
                 {
                     if (task.Exception != null)
                     {

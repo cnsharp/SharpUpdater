@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
@@ -31,7 +32,8 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
         private ProjectAssemblyInfo _assemblyInfo;
         private ProjectProperties _projectProperties;
         private readonly StatusBar statusBar;
-        private string _buildDir;
+        private string _releaseDir;
+        private string _exeDir;
         private string _manifestFile;
         private string _outputDir;
         private string _projectDir;
@@ -74,7 +76,7 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
             var dte2 = Host.Instance.Dte2;
             _startProject = dte2.GetActiveProject();
             _projectDir = _startProject.GetDirectory();
-            _buildDir = $"{_projectDir}\\bin\\Release\\";
+            _releaseDir = $"{_projectDir}\\bin\\Release\\";
             _assemblyInfo = _startProject.GetProjectAssemblyInfo();
             _projectProperties = _startProject.GetProjectProperties();
             _targetFramework = _projectProperties?.TargetFramework;
@@ -175,10 +177,10 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
                     statusBar.Text = string.Empty;
                 }
 
-                var buildDir = _targetFramework == null ? _buildDir : Path.Combine(_buildDir, _targetFramework);
-                _manifestGatherer = new ManifestGatherer(buildDir, _projectDir, _settings);
+                _exeDir = _targetFramework == null ? _releaseDir : Path.Combine(_releaseDir, _targetFramework);
+                _manifestGatherer = new ManifestGatherer(_exeDir, _projectDir, _settings);
                 var items = _manifestGatherer.GatherFiles();
-                manifestGrid.Bind(_manifest, buildDir, items);
+                manifestGrid.Bind(_manifest, _exeDir, items);
                 BindBoxes();
                 exeBox.Text = _startProject.Properties.Item("AssemblyName").Value + ".exe";
             }
@@ -269,7 +271,7 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
             if (!dir.EndsWith("\\"))
                 dir += "\\";
             if (dir.StartsWith("bin\\release\\", StringComparison.InvariantCultureIgnoreCase) ||
-                dir.StartsWith(_buildDir, StringComparison.InvariantCultureIgnoreCase))
+                dir.StartsWith(_releaseDir, StringComparison.InvariantCultureIgnoreCase))
             {
                 errorProvider.SetError(box,"Cannot be a sub directory under build directory.");
                 e.Cancel = true;
@@ -311,15 +313,17 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
                 txtOutputDir.Text = folderBrowserDialog.SelectedPath;
         }
 
-        public async Task Packing()
+        public async Task PackingAsync()
         {
             ActiveOutputWindow();
             OutputMessage("Start..." + Environment.NewLine);
             _outputDir = EnsureOutputDir(_projectDir, txtOutputDir.Text);
+
             //copy files to be packaged
             CopyFiles();
+
             SaveManifest();
-           
+
             //packing
             var zipName = $"{_manifest.AppName}_{_manifest.Version}{Manifest.PackageFileExt}";
             _zipPath = Path.Combine(_outputDir, zipName);
@@ -328,14 +332,16 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
                 if(File.Exists(_zipPath))
                     File.Delete(_zipPath);
                 OutputMessage("Packaging..." + Environment.NewLine);
-                var pb = new PackageBuilder(_manifest, _outputDir);
+                var pb = new PackageBuilder(_manifest, _exeDir);
                 pb.CreatePackage(_zipPath);
             }
 
             OutputMessage("Save project settings..." + Environment.NewLine);
             SaveProjectSettings();
 
-            await Deploy();
+            var deployed = await Deploy();
+            if (!deployed)
+                return;
 
             if (chkOpenDir.Checked)
                 Process.Start(_outputDir);
@@ -355,22 +361,24 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
             Host.Instance.Dte2.OutputMessage(Constants.ProductName, message);
         }
 
-        private async Task Deploy()
+        private async Task<bool> Deploy()
         {
             var url = sourceBox.Text.Trim();
             if (string.IsNullOrWhiteSpace(url))
-                return;
+                return true;
             try
             {
                 OutputMessage("Push the package..." + Environment.NewLine);
-                await PackageUploader.Upload(url, "PUT", _zipPath);
+                await PackageUploader.Upload( _zipPath, url, txtKey.Text);
                 OutputMessage($"Upload package to {url} succeeded.");
+                return true;
             }
             catch(Exception ex)
             {
                 var msg = $"Upload package to {url} failed.";
                 msg += $"Exception:{ex.Message}{Environment.NewLine}";
                 Host.Instance.Dte2.OutputMessage(Constants.ProductName,msg);
+                return false;
             }
         }
 
@@ -382,19 +390,14 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
             _manifest.ReleaseDate = DateTimeOffset.Now;
             _manifest.Files = manifestGrid.GetReleaseFiles().ToList();
 
-            var outputManifestFilePath = string.Concat(_outputDir, "\\", Manifest.ManifestFileName);
-            _manifest.Save(outputManifestFilePath);
+            var exeManifestFilePath = string.Concat(_exeDir, "\\", Manifest.ManifestFileName);
+            _manifest.Save(exeManifestFilePath);
 
             var projectManifestFilePath = string.Concat(_projectDir, "\\", Manifest.ManifestFileName);
           
-            if (!File.Exists(projectManifestFilePath))
+            if (File.Exists(projectManifestFilePath))
             {
-                File.Copy(outputManifestFilePath, projectManifestFilePath);
-                _startProject.ProjectItems.AddFromFile(projectManifestFilePath);
-            }
-            else
-            {
-                _manifest.Save(projectManifestFilePath);
+                _manifest.Merge(projectManifestFilePath);
             }
         }
 

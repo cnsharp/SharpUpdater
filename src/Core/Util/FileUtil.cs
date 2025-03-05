@@ -16,29 +16,33 @@ namespace CnSharp.Updater.Util
             return XmlSerializerHelper.LoadObjectFromXml<Manifest>(fileName);
         }
 
+        public static void Merge(this Manifest manifest, string fileName)
+        {
+            if (!File.Exists(fileName))
+            {
+               throw new FileNotFoundException($"{fileName} not found.");
+            }
+           
+            var current = XmlSerializerHelper.LoadObjectFromXml<Manifest>(fileName);
+            var props = typeof(Manifest).GetProperties()
+                .Where(p => p.CanRead && p.CanWrite && p.GetType() != typeof(XmlNode))
+                .ToList();
+            foreach (var prop in props)
+            {
+                var currentValue = prop.GetValue(current)?.ToString();
+                var newValue = prop.GetValue(manifest);
+                if (currentValue != null && currentValue.StartsWith("$") && currentValue.EndsWith("$"))
+                    continue;
+                if (newValue != null)
+                {
+                    prop.SetValue(current, newValue);
+                }
+            }
+            XmlSerializerHelper.SerializeToXmlFile(current, fileName);
+        }
+
         public static void Save(this Manifest manifest, string fileName)
         {
-            if (File.Exists(fileName))
-            {
-                var current = XmlSerializerHelper.LoadObjectFromXml<Manifest>(fileName);
-                var props = typeof(Manifest).GetProperties()
-                    .Where(p => p.CanRead && p.CanWrite && p.GetType() != typeof(XmlNode))
-                    .ToList();
-                foreach (var prop in props)
-                {
-                    var currentValue = prop.GetValue(current)?.ToString();
-                    var newValue = prop.GetValue(manifest);
-                    if (currentValue != null && currentValue.StartsWith("$") && currentValue.EndsWith("$")) 
-                        continue;
-                    if (newValue != null)
-                    {
-                        prop.SetValue(current, newValue);
-                    }
-                }
-                XmlSerializerHelper.SerializeToXmlFile(current, fileName);
-                return;
-            }
-
             XmlSerializerHelper.SerializeToXmlFile(manifest, fileName);
         }
 

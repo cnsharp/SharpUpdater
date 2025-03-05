@@ -112,7 +112,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="vssharp">
-      <Version>17.0.4</Version>
+      <Version>17.0.6</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
