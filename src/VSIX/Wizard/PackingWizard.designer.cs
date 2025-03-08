@@ -76,7 +76,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(39, 199);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(90, 17);
+            this.label1.Size = new System.Drawing.Size(79, 15);
             this.label1.TabIndex = 3;
             this.label1.Text = "Deploy Server";
             // 
@@ -85,7 +85,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(39, 285);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(52, 17);
+            this.label2.Size = new System.Drawing.Size(47, 15);
             this.label2.TabIndex = 6;
             this.label2.Text = "API Key";
             // 
@@ -96,13 +96,15 @@
             this.txtKey.PasswordChar = '*';
             this.txtKey.Size = new System.Drawing.Size(429, 23);
             this.txtKey.TabIndex = 5;
+            this.txtKey.Validating += new System.ComponentModel.CancelEventHandler(this.txtKey_Validating);
+            this.txtKey.Validated += new System.EventHandler(this.txtKey_Validated);
             // 
             // sourceBox
             // 
             this.sourceBox.FormattingEnabled = true;
             this.sourceBox.Location = new System.Drawing.Point(42, 229);
             this.sourceBox.Name = "sourceBox";
-            this.sourceBox.Size = new System.Drawing.Size(429, 25);
+            this.sourceBox.Size = new System.Drawing.Size(429, 23);
             this.sourceBox.TabIndex = 4;
             // 
             // stepWizardControl
@@ -127,7 +129,7 @@
             this.wizardPageVersion.Controls.Add(this.chkSame);
             this.wizardPageVersion.Name = "wizardPageVersion";
             this.wizardPageVersion.NextPage = this.wizardPageManifest;
-            this.wizardPageVersion.Size = new System.Drawing.Size(744, 516);
+            this.wizardPageVersion.Size = new System.Drawing.Size(744, 518);
             this.stepWizardControl.SetStepText(this.wizardPageVersion, "Version Number");
             this.wizardPageVersion.TabIndex = 2;
             this.wizardPageVersion.Text = "Version Number";
@@ -137,7 +139,7 @@
             this.chkNoBuild.AutoSize = true;
             this.chkNoBuild.Location = new System.Drawing.Point(30, 442);
             this.chkNoBuild.Name = "chkNoBuild";
-            this.chkNoBuild.Size = new System.Drawing.Size(78, 21);
+            this.chkNoBuild.Size = new System.Drawing.Size(72, 19);
             this.chkNoBuild.TabIndex = 11;
             this.chkNoBuild.Text = "No Build";
             this.chkNoBuild.UseVisualStyleBackColor = true;
@@ -186,7 +188,7 @@
             this.chkSame.AutoSize = true;
             this.chkSame.Location = new System.Drawing.Point(146, 442);
             this.chkSame.Name = "chkSame";
-            this.chkSame.Size = new System.Drawing.Size(218, 21);
+            this.chkSame.Size = new System.Drawing.Size(195, 19);
             this.chkSame.TabIndex = 9;
             this.chkSame.Text = "Same Version as the First Project";
             this.chkSame.UseVisualStyleBackColor = true;
@@ -201,7 +203,7 @@
             this.wizardPageManifest.Controls.Add(this.gbFiles);
             this.wizardPageManifest.Name = "wizardPageManifest";
             this.wizardPageManifest.NextPage = this.wizardPagePackage;
-            this.wizardPageManifest.Size = new System.Drawing.Size(744, 516);
+            this.wizardPageManifest.Size = new System.Drawing.Size(744, 518);
             this.stepWizardControl.SetStepText(this.wizardPageManifest, "Manifest");
             this.wizardPageManifest.TabIndex = 5;
             this.wizardPageManifest.Text = "Manifest";
@@ -212,7 +214,7 @@
             this.targetBox.FormattingEnabled = true;
             this.targetBox.Location = new System.Drawing.Point(143, 443);
             this.targetBox.Name = "targetBox";
-            this.targetBox.Size = new System.Drawing.Size(184, 25);
+            this.targetBox.Size = new System.Drawing.Size(184, 23);
             this.targetBox.TabIndex = 0;
             // 
             // label4
@@ -220,7 +222,7 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(22, 446);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(115, 17);
+            this.label4.Size = new System.Drawing.Size(101, 15);
             this.label4.TabIndex = 4;
             this.label4.Text = "Target Framework";
             // 
@@ -230,7 +232,7 @@
             this.exeBox.FormattingEnabled = true;
             this.exeBox.Location = new System.Drawing.Point(521, 444);
             this.exeBox.Name = "exeBox";
-            this.exeBox.Size = new System.Drawing.Size(184, 25);
+            this.exeBox.Size = new System.Drawing.Size(184, 23);
             this.exeBox.TabIndex = 1;
             this.exeBox.Validating += new System.ComponentModel.CancelEventHandler(this.exeBox_Validating);
             this.exeBox.Validated += new System.EventHandler(this.exeBox_Validated);
@@ -240,7 +242,7 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(387, 449);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(119, 17);
+            this.label3.Size = new System.Drawing.Size(111, 15);
             this.label3.TabIndex = 2;
             this.label3.Text = "Application Entry(*)";
             // 
@@ -263,14 +265,13 @@
             this.manifestGrid.Name = "manifestGrid";
             this.manifestGrid.Size = new System.Drawing.Size(738, 407);
             this.manifestGrid.TabIndex = 0;
-            this.manifestGrid.OnSelectedRowsChanged += new System.EventHandler(this.manifestGrid_OnSelectedRowsChanged);
             // 
             // wizardPagePackage
             // 
             this.wizardPagePackage.Controls.Add(this._productInfoControl);
             this.wizardPagePackage.Name = "wizardPagePackage";
             this.wizardPagePackage.NextPage = this.wizardPageDeploy;
-            this.wizardPagePackage.Size = new System.Drawing.Size(744, 516);
+            this.wizardPagePackage.Size = new System.Drawing.Size(744, 518);
             this.stepWizardControl.SetStepText(this.wizardPagePackage, "Product Info");
             this.wizardPagePackage.TabIndex = 3;
             this.wizardPagePackage.Text = "Product Info";
@@ -282,7 +283,7 @@
             this._productInfoControl.Manifest = null;
             this._productInfoControl.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this._productInfoControl.Name = "_productInfoControl";
-            this._productInfoControl.Size = new System.Drawing.Size(744, 516);
+            this._productInfoControl.Size = new System.Drawing.Size(744, 518);
             this._productInfoControl.TabIndex = 0;
             // 
             // wizardPageDeploy
@@ -297,7 +298,7 @@
             this.wizardPageDeploy.Controls.Add(this.txtKey);
             this.wizardPageDeploy.IsFinishPage = true;
             this.wizardPageDeploy.Name = "wizardPageDeploy";
-            this.wizardPageDeploy.Size = new System.Drawing.Size(744, 516);
+            this.wizardPageDeploy.Size = new System.Drawing.Size(744, 518);
             this.stepWizardControl.SetStepText(this.wizardPageDeploy, "Deploy");
             this.wizardPageDeploy.TabIndex = 4;
             this.wizardPageDeploy.Text = "Deploy";
@@ -309,7 +310,7 @@
             this.chkOpenDir.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkOpenDir.Location = new System.Drawing.Point(42, 134);
             this.chkOpenDir.Name = "chkOpenDir";
-            this.chkOpenDir.Size = new System.Drawing.Size(221, 21);
+            this.chkOpenDir.Size = new System.Drawing.Size(201, 19);
             this.chkOpenDir.TabIndex = 24;
             this.chkOpenDir.Text = "Open output directory after build";
             this.chkOpenDir.UseVisualStyleBackColor = true;
@@ -319,7 +320,7 @@
             this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(39, 38);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(158, 17);
+            this.label10.Size = new System.Drawing.Size(143, 15);
             this.label10.TabIndex = 22;
             this.label10.Text = "Package Output Directory";
             // 

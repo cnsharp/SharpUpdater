@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using CnSharp.Updater;
 
@@ -18,11 +19,12 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
 
         private Manifest _manifest;
         private int _rootLength;
-        private bool _fileVersionGot;
+        private static readonly Regex RegexProgramFiles = new Regex(@"\.(exe|dll)$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex RegexProgramConfigFiles = new Regex(@"\.(deps\.json|runtimeconfig\.json)$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         public event EventHandler OnSelectedRowsChanged;
 
-        public void Bind(Manifest manifest,string baseDir,IEnumerable<FileListItem> items)
+        public void Bind(Manifest manifest, string baseDir, IEnumerable<FileListItem> items)
         {
             _manifest = manifest;
             _rootLength = baseDir.Length;
@@ -40,11 +42,10 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
                 else
                 {
                     var shortName = item.Dir.Substring(_rootLength).TrimStart(Path.DirectorySeparatorChar);
-
                     var fi = new FileInfo(item.Dir);
-                    var ext = fi.Extension.ToLower();
                     var version = string.Empty;
-                    if (ext == ".exe" || ext == ".dll")
+                    bool isMain = false;
+                    if (RegexProgramFiles.IsMatch(item.Dir))
                     {
                         version = FileVersionInfo.GetVersionInfo(item.Dir).FileVersion;
                         if (fi.Name == _manifest.EntryPoint)
@@ -53,9 +54,10 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
                                 _manifest.Version = version;
                             if(_manifest.MinVersion.EndsWith("*"))
                                 _manifest.MinVersion = version;
+                            isMain = true;
                         }
                     }
-                    gridFileList.Rows.Add(item.Selected,shortName, fi.Length, version);
+                    gridFileList.Rows.Add(isMain ? true : item.Selected, shortName, fi.Length, version);
               
 
                     var lastRow = gridFileList.Rows[gridFileList.Rows.Count - 1];
@@ -64,23 +66,30 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
                     if (!string.IsNullOrEmpty(version))
                     {
                         lastRow.Cells[ColFileVersion.Name].ReadOnly = true;
+                        lastRow.ReadOnly = isMain;
                         lastRow.DefaultCellStyle.ForeColor = Color.Gray;
                     }
                 }
             });
 
-                GetFilesVersion();
+            GetFilesVersion();
         }
 
         private void GetFilesVersion()
         {
-            if (_fileVersionGot)
-                return;
             foreach (DataGridViewRow gr in gridFileList.Rows)
             {
                 var fileName = gr.Cells[ColFileName.Name].Value.ToString().ToLower();
-                if (fileName.EndsWith(".exe") || fileName.EndsWith(".dll") || fileName.StartsWith("["))
+                if (RegexProgramFiles.IsMatch(fileName) || IsFolder(fileName))
                     continue;
+                if (RegexProgramConfigFiles.IsMatch(fileName))
+                {
+                    gr.Cells[ColFileVersion.Name].Value = _manifest.Version;
+                    gr.Cells[ColSelect.Name].Value = true;
+                    gr.ReadOnly = true;
+                    gr.DefaultCellStyle.ForeColor = Color.Gray;
+                    continue;
+                }
                 var ver = "-";
                 foreach (var file in _manifest.Files)
                 {
@@ -91,9 +100,7 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
                     }
                 }
                 gr.Cells[ColFileVersion.Name].Value = ver;
-
             }
-            _fileVersionGot = true;
         }
 
 
@@ -163,6 +170,7 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
                     gridFileList.Rows[i].Cells[0].Value = selected;
                 }
             }
+            gridFileList.CurrentCell.Value = selected;
            OnSelectedRowsChanged?.Invoke(this,EventArgs.Empty);
         }
 
@@ -230,7 +238,12 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
 
         protected bool IsFile(string cellText)
         {
-            return !cellText.StartsWith("[");
+            return !IsFolder(cellText);
+        }
+
+        protected bool IsFolder(string cellText)
+        {
+            return cellText.StartsWith("[");
         }
 
         public IEnumerable<string> GetSelectedFiles(string ext = null)

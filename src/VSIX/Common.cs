@@ -28,6 +28,11 @@ namespace CnSharp.VisualStudio.SharpUpdater
         {
             return MessageBox.Show(message, Constants.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+
+        public static DialogResult ShowWarning(string message)
+        {
+            return MessageBox.Show(message, Constants.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
     }
 
     public class ProductInfo

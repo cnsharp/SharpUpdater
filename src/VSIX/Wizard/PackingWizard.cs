@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
@@ -212,7 +211,10 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
             }
             else if (stepWizardControl.SelectedPage == wizardPageDeploy)
             {
-                txtOutputDir.Focus();
+                if(!string.IsNullOrWhiteSpace(_settings.DeployServer) && string.IsNullOrWhiteSpace(_settings.DeployKey))
+                    txtKey.Focus();
+                else
+                    txtOutputDir.Focus();
                 txtOutputDir.Text = _settings.PackageOutputDirectory;
                 sourceBox.Text = _settings.DeployServer;
                 txtKey.Text = _settings.DeployKey;
@@ -225,7 +227,6 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
             _manifest.ReleaseUrl = sourceBox.Text.Trim();
             DialogResult = DialogResult.OK;
         }
-
 
         private void BindTextBoxEvents()
         {
@@ -399,6 +400,11 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
             {
                 _manifest.Merge(projectManifestFilePath);
             }
+            else
+            {
+                File.Copy(exeManifestFilePath, projectManifestFilePath);
+                _startProject.ProjectItems.AddFromFile(projectManifestFilePath);
+            }
         }
 
         private void SaveProjectSettings()
@@ -426,6 +432,12 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
                     Directory.CreateDirectory(targetDir);
                 File.Copy(sourceFile, targetFile, true);
             }
+            //copy manifest
+            File.Copy(Path.Combine(_exeDir, Constants.ManifestFileName), Path.Combine(_outputDir, Constants.ManifestFileName), true);
+            //copy updater
+            var updaterFile = Path.Combine(_exeDir, Constants.UpdaterFileName);
+            if (File.Exists(updaterFile))
+                File.Copy(updaterFile, Path.Combine(_outputDir, Constants.UpdaterFileName), true);
         }
 
         protected string EnsureOutputDir(string baseDir, string outputDir)
@@ -500,10 +512,6 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
             }
         }
 
-        private void manifestGrid_OnSelectedRowsChanged(object sender, EventArgs e)
-        {
-            BindBoxes();
-        }
 
         private void BindBoxes()
         {
@@ -558,6 +566,24 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
                 return;
             errorProvider.SetError(box, null);
         }
-     
+
+        private void txtKey_Validating(object sender, CancelEventArgs e)
+        {
+            if (NeedApiKey())
+            {
+                errorProvider.SetError(txtKey, "ApiKey is required.");
+                e.Cancel = true;
+            }
+        }
+
+        private bool NeedApiKey()
+        {
+            return !string.IsNullOrWhiteSpace(sourceBox.Text) && string.IsNullOrWhiteSpace(txtKey.Text);
+        }
+
+        private void txtKey_Validated(object sender, EventArgs e)
+        {
+            errorProvider.SetError(txtKey, null);
+        }
     }
 }
