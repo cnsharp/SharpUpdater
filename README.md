@@ -51,6 +51,8 @@ There are two approaches to create a update pack.
 2. Use [SharpUpdater.CLI](https://www.nuget.org/packages/SharpUpdater.CLI).
 ```
 dotnet tool install --global SharpUpdater.CLI
+
+su pack -p C:\path\to\your.csproj -s http://YOUR_SERVER_HOST/sp -v 1.0.0
 ```
 
 ### Deploy the update pack
