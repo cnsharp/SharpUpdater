@@ -33,6 +33,7 @@ static void Main(string[] args)
             };
             var proc = Process.Start(processStartInfo);
             proc?.WaitForExit();
+            return;
         }
     }
 
