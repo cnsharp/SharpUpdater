@@ -140,6 +140,7 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
             var asm = project.GetProjectAssemblyInfo();
             projectGrid.Rows.Add(
                 project.Name,
+                asm != null ? asm.Version : string.Empty,
                 asm != null ? asm.Version : string.Empty
                 );
             projectGrid.Rows[projectGrid.Rows.Count - 1].Tag = project;
@@ -320,9 +321,6 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
             OutputMessage("Start..." + Environment.NewLine);
             _outputDir = EnsureOutputDir(_projectDir, txtOutputDir.Text);
 
-            //copy files to be packaged
-            CopyFiles();
-
             SaveManifest();
 
             //packing
@@ -330,7 +328,7 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
             _zipPath = Path.Combine(_outputDir, zipName);
             if (!chkNoBuild.Checked)
             {
-                if(File.Exists(_zipPath))
+                if (File.Exists(_zipPath))
                     File.Delete(_zipPath);
                 OutputMessage("Packaging..." + Environment.NewLine);
                 var pb = new PackageBuilder(_manifest, _exeDir);
@@ -403,8 +401,17 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
             else
             {
                 File.Copy(exeManifestFilePath, projectManifestFilePath);
-                _startProject.ProjectItems.AddFromFile(projectManifestFilePath);
+                try
+                {
+                    _startProject.ProjectItems.AddFromFile(projectManifestFilePath);
+                }
+                catch (Exception ignored)
+                {
+
+                }
             }
+
+            File.Copy(exeManifestFilePath, Path.Combine(_outputDir, _manifest.Id+Constants.ManifestExtension), true);
         }
 
         private void SaveProjectSettings()
@@ -419,25 +426,6 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
             var cacheDir = Paths.GetSettingsFileLocation(_startProject);
             var cacheHelper = new CacheHelper<NuPackSettings>();
             cacheHelper.Save(_settings, cacheDir);
-        }
-
-        private void CopyFiles()
-        {
-            foreach (var item in manifestGrid.GetSelectedItems())
-            {
-                var sourceFile = item.Dir;
-                var targetFile = Path.Combine(_outputDir, item.RelativeFileName);
-                var targetDir = Path.GetDirectoryName(targetFile);
-                if (!Directory.Exists(targetDir))
-                    Directory.CreateDirectory(targetDir);
-                File.Copy(sourceFile, targetFile, true);
-            }
-            //copy manifest
-            File.Copy(Path.Combine(_exeDir, Constants.ManifestFileName), Path.Combine(_outputDir, Constants.ManifestFileName), true);
-            //copy updater
-            var updaterFile = Path.Combine(_exeDir, Constants.UpdaterFileName);
-            if (File.Exists(updaterFile))
-                File.Copy(updaterFile, Path.Combine(_outputDir, Constants.UpdaterFileName), true);
         }
 
         protected string EnsureOutputDir(string baseDir, string outputDir)
@@ -459,8 +447,8 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
                 var project = row.Tag as Project;
                 var assemblyInfo = project.GetProjectAssemblyInfo();
                 var newVersion = row.Cells[1].Value?.ToString().Trim();
-                if (string.IsNullOrEmpty(newVersion) && i == 0)
-                    return;
+                //if (string.IsNullOrEmpty(newVersion) && i == 0)
+                //    return;
 
                 if (assemblyInfo != null)
                 {
@@ -478,11 +466,11 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
                                 project.Properties.Item("FileVersion").Value =
                                  project.Properties.Item("AssemblyVersion").Value = newVersion;
                         }
-                    }
 
-                    if (i == 0)
-                    {
-                        _manifest.Version = _manifest.MinVersion = newVersion.ToSemanticVersion();
+                        if (i == 0)
+                        {
+                            _manifest.Version = _manifest.MinVersion = newVersion.ToSemanticVersion();
+                        }
                     }
                 }
 
@@ -506,7 +494,7 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
             {
                 if (i > 0)
                 {
-                    row.Cells[1].Value = chkSame.Checked ? v : (row.Tag as ProjectAssemblyInfo).Version;
+                    row.Cells[1].Value = chkSame.Checked ? v : row.Cells[2].Value;
                 }
                 i++;
             }
@@ -516,21 +504,28 @@ namespace CnSharp.VisualStudio.SharpUpdater.Wizard
         private void BindBoxes()
         {
             BindTargetBox();
-            BindBox(exeBox, ".exe");
+            foreach (var fileType in Common.SupportedFileTypes)
+            {
+                if (BindBox(exeBox, fileType))
+                    break;
+            }
         }
 
-        private void BindBox(ComboBox box, string ext)
+        private bool BindBox(ComboBox box, string ext)
         {
             var current = box.Text;
             var files = manifestGrid.GetSelectedFiles(ext).ToList();
             box.Items.Clear();
             box.Items.AddRange(files.ToArray());
             if (!string.IsNullOrWhiteSpace(current) && files.Contains(current))
-                return;
+                return true;
             if (files.Count > 0)
             {
                 box.Text = files[0];
+                return true;
             }
+
+            return false;
         }
 
         private void BindTargetBox()

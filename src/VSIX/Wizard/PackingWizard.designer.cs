@@ -39,8 +39,6 @@
             this.chkNoBuild = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.projectGrid = new System.Windows.Forms.DataGridView();
-            this.ColProductName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.chkSame = new System.Windows.Forms.CheckBox();
             this.wizardPageManifest = new AeroWizard.WizardPage();
             this.targetBox = new System.Windows.Forms.ComboBox();
@@ -59,6 +57,9 @@
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.projectBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.ColProductName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColVersionHidden = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.stepWizardControl)).BeginInit();
             this.wizardPageVersion.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -76,7 +77,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(39, 199);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(79, 15);
+            this.label1.Size = new System.Drawing.Size(90, 17);
             this.label1.TabIndex = 3;
             this.label1.Text = "Deploy Server";
             // 
@@ -85,7 +86,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(39, 285);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(47, 15);
+            this.label2.Size = new System.Drawing.Size(52, 17);
             this.label2.TabIndex = 6;
             this.label2.Text = "API Key";
             // 
@@ -104,7 +105,7 @@
             this.sourceBox.FormattingEnabled = true;
             this.sourceBox.Location = new System.Drawing.Point(42, 229);
             this.sourceBox.Name = "sourceBox";
-            this.sourceBox.Size = new System.Drawing.Size(429, 23);
+            this.sourceBox.Size = new System.Drawing.Size(429, 25);
             this.sourceBox.TabIndex = 4;
             // 
             // stepWizardControl
@@ -129,7 +130,7 @@
             this.wizardPageVersion.Controls.Add(this.chkSame);
             this.wizardPageVersion.Name = "wizardPageVersion";
             this.wizardPageVersion.NextPage = this.wizardPageManifest;
-            this.wizardPageVersion.Size = new System.Drawing.Size(744, 518);
+            this.wizardPageVersion.Size = new System.Drawing.Size(744, 516);
             this.stepWizardControl.SetStepText(this.wizardPageVersion, "Version Number");
             this.wizardPageVersion.TabIndex = 2;
             this.wizardPageVersion.Text = "Version Number";
@@ -139,7 +140,7 @@
             this.chkNoBuild.AutoSize = true;
             this.chkNoBuild.Location = new System.Drawing.Point(30, 442);
             this.chkNoBuild.Name = "chkNoBuild";
-            this.chkNoBuild.Size = new System.Drawing.Size(72, 19);
+            this.chkNoBuild.Size = new System.Drawing.Size(78, 21);
             this.chkNoBuild.TabIndex = 11;
             this.chkNoBuild.Text = "No Build";
             this.chkNoBuild.UseVisualStyleBackColor = true;
@@ -163,7 +164,8 @@
             this.projectGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.projectGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColProductName,
-            this.ColVersion});
+            this.ColVersion,
+            this.ColVersionHidden});
             this.projectGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.projectGrid.Location = new System.Drawing.Point(3, 19);
             this.projectGrid.Name = "projectGrid";
@@ -171,24 +173,12 @@
             this.projectGrid.Size = new System.Drawing.Size(738, 402);
             this.projectGrid.TabIndex = 0;
             // 
-            // ColProductName
-            // 
-            this.ColProductName.FillWeight = 200F;
-            this.ColProductName.HeaderText = "Project Name";
-            this.ColProductName.Name = "ColProductName";
-            this.ColProductName.ReadOnly = true;
-            // 
-            // ColVersion
-            // 
-            this.ColVersion.HeaderText = "Version";
-            this.ColVersion.Name = "ColVersion";
-            // 
             // chkSame
             // 
             this.chkSame.AutoSize = true;
             this.chkSame.Location = new System.Drawing.Point(146, 442);
             this.chkSame.Name = "chkSame";
-            this.chkSame.Size = new System.Drawing.Size(195, 19);
+            this.chkSame.Size = new System.Drawing.Size(218, 21);
             this.chkSame.TabIndex = 9;
             this.chkSame.Text = "Same Version as the First Project";
             this.chkSame.UseVisualStyleBackColor = true;
@@ -214,7 +204,7 @@
             this.targetBox.FormattingEnabled = true;
             this.targetBox.Location = new System.Drawing.Point(143, 443);
             this.targetBox.Name = "targetBox";
-            this.targetBox.Size = new System.Drawing.Size(184, 23);
+            this.targetBox.Size = new System.Drawing.Size(184, 25);
             this.targetBox.TabIndex = 0;
             // 
             // label4
@@ -222,7 +212,7 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(22, 446);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(101, 15);
+            this.label4.Size = new System.Drawing.Size(115, 17);
             this.label4.TabIndex = 4;
             this.label4.Text = "Target Framework";
             // 
@@ -232,7 +222,7 @@
             this.exeBox.FormattingEnabled = true;
             this.exeBox.Location = new System.Drawing.Point(521, 444);
             this.exeBox.Name = "exeBox";
-            this.exeBox.Size = new System.Drawing.Size(184, 23);
+            this.exeBox.Size = new System.Drawing.Size(184, 25);
             this.exeBox.TabIndex = 1;
             this.exeBox.Validating += new System.ComponentModel.CancelEventHandler(this.exeBox_Validating);
             this.exeBox.Validated += new System.EventHandler(this.exeBox_Validated);
@@ -242,7 +232,7 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(387, 449);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(111, 15);
+            this.label3.Size = new System.Drawing.Size(119, 17);
             this.label3.TabIndex = 2;
             this.label3.Text = "Application Entry(*)";
             // 
@@ -310,7 +300,7 @@
             this.chkOpenDir.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkOpenDir.Location = new System.Drawing.Point(42, 134);
             this.chkOpenDir.Name = "chkOpenDir";
-            this.chkOpenDir.Size = new System.Drawing.Size(201, 19);
+            this.chkOpenDir.Size = new System.Drawing.Size(221, 21);
             this.chkOpenDir.TabIndex = 24;
             this.chkOpenDir.Text = "Open output directory after build";
             this.chkOpenDir.UseVisualStyleBackColor = true;
@@ -320,7 +310,7 @@
             this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(39, 38);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(143, 15);
+            this.label10.Size = new System.Drawing.Size(158, 17);
             this.label10.TabIndex = 22;
             this.label10.Text = "Package Output Directory";
             // 
@@ -345,6 +335,24 @@
             // errorProvider
             // 
             this.errorProvider.ContainerControl = this;
+            // 
+            // ColProductName
+            // 
+            this.ColProductName.FillWeight = 200F;
+            this.ColProductName.HeaderText = "Project Name";
+            this.ColProductName.Name = "ColProductName";
+            this.ColProductName.ReadOnly = true;
+            // 
+            // ColVersion
+            // 
+            this.ColVersion.HeaderText = "Version";
+            this.ColVersion.Name = "ColVersion";
+            // 
+            // ColVersionHidden
+            // 
+            this.ColVersionHidden.HeaderText = "ColVersionHidden";
+            this.ColVersionHidden.Name = "ColVersionHidden";
+            this.ColVersionHidden.Visible = false;
             // 
             // PackingWizard
             // 
@@ -392,8 +400,6 @@
         private AeroWizard.WizardPage wizardPageManifest;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.DataGridView projectGrid;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColProductName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColVersion;
         private System.Windows.Forms.CheckBox chkSame;
         private System.Windows.Forms.GroupBox gbFiles;
         private System.Windows.Forms.CheckBox chkOpenDir;
@@ -408,5 +414,8 @@
         private System.Windows.Forms.ComboBox targetBox;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox chkNoBuild;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColProductName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColVersion;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColVersionHidden;
     }
 }

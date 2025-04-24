@@ -1,4 +1,8 @@
-﻿V17.0 2025/3/2
+﻿V17.1 2025/4/25
+- Support VSIX projects and some bug fix.
+- Output .sp/.manifest files only other than all files.
+
+V17.0 2025/3/2
 - Support Visual Studio 2022 (VS17)
 
 V4.0 2016/6/24 (Has been offline)
