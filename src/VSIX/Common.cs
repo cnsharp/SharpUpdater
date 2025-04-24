@@ -15,6 +15,7 @@ namespace CnSharp.VisualStudio.SharpUpdater
     {
         public static readonly string IgnoreFileName = $"{Constants.ProductName}.ignore";
         public static readonly string[] SupportedProjectTypes = { ".csproj", ".vbproj", ".fsproj" };
+        public static readonly string[] SupportedFileTypes = { ".exe"};
 
         public static bool Contains(Enum keys, Enum flag)
         {

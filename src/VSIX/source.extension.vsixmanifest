@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="SharpUpdater.81a7c7de-15b2-48df-9594-12cf1f732842" Version="17.0.2" Language="en-US" Publisher="CnSharp Studio" />
+        <Identity Id="SharpUpdater.81a7c7de-15b2-48df-9594-12cf1f732842" Version="17.0.3" Language="en-US" Publisher="CnSharp Studio" />
         <DisplayName>SharpUpdater</DisplayName>
         <Description xml:space="preserve">A wizard tool to build/deploy SharpUpdater packages. SharpUpdater is a full featured auto-update solution for desktop applications.</Description>
         <MoreInfo>https://github.com/cnsharp/SharpUpdater</MoreInfo>
